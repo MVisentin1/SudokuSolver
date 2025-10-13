@@ -11,6 +11,9 @@ public abstract class CandidateBase<C extends CellBase<?>> {
 
     // ------------ constructor ----------------------
     protected CandidateBase(int number, C cell, boolean eliminated) {
+        if (number < 1 || number > 9) {
+            throw new IllegalArgumentException("number must be between 1 and 9");
+        }
         this.number = number;
         this.cell = cell;
         this.eliminated = eliminated;
