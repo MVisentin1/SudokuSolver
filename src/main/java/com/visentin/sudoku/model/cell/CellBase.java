@@ -14,6 +14,9 @@ public abstract class CellBase<C extends CandidateBase<?>> {
 
     // ------------ constructor -------------------------------
     protected CellBase(C[] candidates, int value) {
+        if (candidates.length != 9) {
+            throw new IllegalArgumentException("Cell must contain 9 candidates");
+        }
         this.candidates = candidates;
         this.value = value;
     }
@@ -26,6 +29,9 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         return mode;
     }
     public void setMode(CellHighlightMode mode) {
+        if (this.mode == mode) {
+            throw new IllegalStateException("already set at : " + mode);
+        }
         this.mode = mode;
     }
 
