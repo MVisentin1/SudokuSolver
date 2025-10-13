@@ -1,4 +1,4 @@
-package com.visentin.s.util.enums;
+package com.visentin.sudoku.util.enums;
 
 public enum CandidateHighlightMode {
     NONE, ON, OFF

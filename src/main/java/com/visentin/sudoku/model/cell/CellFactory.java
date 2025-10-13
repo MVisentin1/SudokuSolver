@@ -1,7 +1,7 @@
-package com.visentin.s.model.cell;
+package com.visentin.sudoku.model.cell;
 
-import com.visentin.s.model.candidate.CandidateSolver;
-import com.visentin.s.model.candidate.CandidateUI;
+import com.visentin.sudoku.model.candidate.CandidateSolver;
+import com.visentin.sudoku.model.candidate.CandidateUI;
 
 public class CellFactory {
 

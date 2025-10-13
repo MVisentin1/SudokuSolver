@@ -1,9 +1,9 @@
-package com.visentin.s.model.cell;
+package com.visentin.sudoku.model.cell;
 
 
-import com.visentin.s.model.candidate.CandidateBase;
-import com.visentin.s.util.enums.CellHighlightMode;
-import com.visentin.s.util.exceptions.CellWrongSolvedStateAccessException;
+import com.visentin.sudoku.model.candidate.CandidateBase;
+import com.visentin.sudoku.util.enums.CellHighlightMode;
+import com.visentin.sudoku.util.exceptions.CellWrongSolvedStateAccessException;
 
 import java.util.Optional;
 

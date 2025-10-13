@@ -1,7 +1,7 @@
-package com.visentin.s.model.candidate;
+package com.visentin.sudoku.model.candidate;
 
-import com.visentin.s.model.cell.CellBase;
-import com.visentin.s.util.enums.CandidateHighlightMode;
+import com.visentin.sudoku.model.cell.CellBase;
+import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 
 public abstract class CandidateBase<C extends CellBase<?>> {
     private final int number;

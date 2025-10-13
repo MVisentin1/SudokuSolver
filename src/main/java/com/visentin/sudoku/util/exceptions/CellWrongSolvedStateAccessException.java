@@ -1,4 +1,4 @@
-package com.visentin.s.util.exceptions;
+package com.visentin.sudoku.util.exceptions;
 
 public class CellWrongSolvedStateAccessException extends RuntimeException {
     public CellWrongSolvedStateAccessException() {

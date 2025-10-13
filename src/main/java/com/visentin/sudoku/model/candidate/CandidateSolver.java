@@ -1,6 +1,6 @@
-package com.visentin.s.model.candidate;
+package com.visentin.sudoku.model.candidate;
 
-import com.visentin.s.model.cell.CellSolver;
+import com.visentin.sudoku.model.cell.CellSolver;
 
 public class CandidateSolver extends CandidateBase<CellSolver> {
 
