@@ -42,8 +42,13 @@ class CellBaseTest {
     }
 
     @Test
-    void constructor_InvalidNumber
-
+    void constructor_InvalidValue_ThrowsException() {
+        int value = -1;
+        int value1 = 10;
+        TestCandidate[] candidates = new TestCandidate[9];
+        assertThrows(Exception.class, () -> new TestCell(candidates, value));
+        assertThrows(Exception.class, () -> new TestCell(candidates, value1));
+    }
 
     @Test
     void constructor_CorrectParams_InitializesFields() {
