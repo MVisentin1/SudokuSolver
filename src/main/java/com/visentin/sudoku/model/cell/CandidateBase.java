@@ -22,12 +22,9 @@ public abstract class CandidateBase<C extends CellBase<?>> {
 
     // Method for 2-step initialization
     void attachCell(C cell) {
-        if (initialized) {
-            throw new IllegalStateException("Cell already attached");
-        }
-        if (cell == null) {
-            throw new IllegalArgumentException("Cell cannot be null");
-        }
+        assert !this.initialized : "Candidate already initialized";
+        assert cell != null : "Cell must not be null";
+
         this.cell = cell;
         this.accessible = !cell.isSolved();
         this.initialized = true;

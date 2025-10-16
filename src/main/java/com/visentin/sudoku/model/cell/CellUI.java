@@ -25,12 +25,12 @@ public class CellUI extends CellBase<CandidateUI> {
     }
 
     // ---------------- value field property sync --------------
-    @Override public void setAsSolved(int value) {
-        super.setAsSolved(value);
+    @Override public void solve(int value) {
+        super.solve(value);
         this.value.set(value);
     }
-    @Override public void setAsUnsolved() {
-        super.setAsUnsolved();
+    @Override public void unsolve() {
+        super.unsolve();
         this.value.set(0);
     }
 

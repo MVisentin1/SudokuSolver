@@ -19,10 +19,11 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         if (value < 0 || value > 9) {
             throw new IllegalArgumentException("invalid value, must be between 0 and 9");
         }
+        this.value = value;
         this.candidates = candidates;
     }
 
-    // ------------ getters setters ----------------------------
+    // ------------  getters setters ----------------------------
     public int getValue() {
         return this.value;
     }
@@ -38,7 +39,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     public boolean isSolved(){
         return this.value != 0;
     }
-    public void setAsSolved(int value) {
+    public void solve(int value) {
         valueValidation(value);
         assert this.value == 0 || this.value != value : "already set at value : " + this.value;
         this.value = value;
@@ -46,7 +47,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
             candidate.setAccessible(false);
         }
     }
-    public void setAsUnsolved() {
+    public void unsolve() {
         assert this.value != 0 : "already unsolved";
         this.value = 0;
         for (C candidate : candidates) {
