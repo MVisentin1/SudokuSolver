@@ -57,9 +57,9 @@ class CandidateBaseTest {
         CandidateHighlightMode mode = CandidateHighlightMode.ON;
 
         TestCandidate c = new TestCandidate(1, new TestCell(), false);
-        c.setMode(mode);
+        c.setHighlight(mode);
 
-        assertErrorIfEnabled(() -> c.setMode(mode));
+        assertErrorIfEnabled(() -> c.setHighlight(mode));
     }
 
     @Test
