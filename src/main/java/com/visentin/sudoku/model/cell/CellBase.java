@@ -17,6 +17,9 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         if (candidates.length != 9) {
             throw new IllegalArgumentException("Cell must contain 9 candidates");
         }
+        if (value < 0 || value > 9) {
+            throw new IllegalArgumentException("invalid value, must be between 0 and 9");
+        }
         this.candidates = candidates;
         this.value = value;
     }
@@ -50,6 +53,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
         candidateIndexValidation(i);
+        assert !isSolved() : "Cannot query candidates of a solved cell";
         C candidate = this.candidates[i-1];
         if (candidate.isEliminated()){
             return Optional.empty();
@@ -58,10 +62,16 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     }
     public void addCandidate(int i) {
         candidateIndexValidation(i);
+        if (isSolved()) {
+            throw new CellWrongSolvedStateAccessException("Cannot add candidates to solved cell");
+        }
         this.candidates[i-1].setEliminated(false);
     }
     public void removeCandidate(int i){
         candidateIndexValidation(i);
+        if (isSolved()) {
+            throw new CellWrongSolvedStateAccessException("Cannot remove candidates to solved cell");
+        }
         this.candidates[i-1].setEliminated(true);
     }
 

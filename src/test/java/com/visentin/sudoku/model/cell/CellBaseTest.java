@@ -5,6 +5,8 @@ import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 import com.visentin.sudoku.util.enums.CellHighlightMode;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +37,7 @@ class CellBaseTest {
     @Test
     void constructor_CandidatesLengthNot9_ThrowsException() {
         TestCandidate[] candidates = new TestCandidate[4];
-        TestCandidate[] candidates1 = new TestCandidate[9];
+        TestCandidate[] candidates1 = new TestCandidate[10];
 
 
         assertThrows(Exception.class, () -> new TestCell(candidates, 1));
@@ -102,15 +104,75 @@ class CellBaseTest {
     }
 
     @Test
-    void findCandidate() {
-
+    void findCandidate_CellSolved_AssertionErrorThrown() {
+        TestCell c = createTestCell();
+        c.setAsSolved(5);
+        assertErrorIfEnabled(() -> c.findCandidate(1));
     }
 
     @Test
-    void addCandidate() {
+    void findCandidate_CandidateNotPresent_EmptyOptionalReturned() {
+        TestCell c = createTestCell();
+        int value = 5;
+        c.removeCandidate(value);
+        assertFalse(c.findCandidate(value).isPresent());
     }
 
     @Test
-    void removeCandidate() {
+    void findCandidate_CandidatePresent_OptionalWithCandidateReturned() {
+        TestCell c = createTestCell();
+        int value = 5;
+
+        Optional<TestCandidate> candidate = c.findCandidate(value);
+
+        assertTrue(candidate.isPresent());
+        assertEquals(value, candidate.get().getNumber());
+        assertEquals(c, candidate.get().getCell());
+        assertFalse(candidate.get().isEliminated());
+    }
+
+    @Test
+    void addCandidate_CellSolved_ErrorThrown() {
+        TestCell c = createTestCell();
+        c.setAsSolved(5);
+
+        assertThrows(Exception.class, () -> c.addCandidate(1));
+    }
+
+    @Test
+    void addCandidate_NormalCase_CandidateAdded() {
+        TestCell c = createTestCell();
+        int value = 5;
+
+        c.removeCandidate(value);
+        c.addCandidate(value);
+        Optional<TestCandidate> candidate = c.findCandidate(value);
+        if (candidate.isPresent()) {
+            assertEquals(value, candidate.get().getNumber());
+            assertEquals(c, candidate.get().getCell());
+            assertFalse(candidate.get().isEliminated());
+        } else {
+            fail("Candidate not found");
+        }
+    }
+
+    @Test
+    void removeCandidate_CellSolved_ErrorThrown() {
+        TestCell c = createTestCell();
+        c.setAsSolved(5);
+
+        assertThrows(Exception.class, () -> c.removeCandidate(1));
+    }
+
+    @Test
+    void removeCandidate_NormalCase_CandidateRemoved() {
+        TestCell c = createTestCell();
+        int value = 5;
+
+        c.removeCandidate(value);
+        Optional<TestCandidate> candidate = c.findCandidate(value);
+        if (candidate.isPresent()) {
+            fail("Candidate not removed");
+        }
     }
 }
