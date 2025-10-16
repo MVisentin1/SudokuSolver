@@ -43,6 +43,6 @@ public final class AccessibleCandidate<C extends CellBase<?>> {
     }
 
     public CandidateHighlightMode getMode() {
-        return candidate.getMode();
+        return candidate.getHighlightMode();
     }
 }

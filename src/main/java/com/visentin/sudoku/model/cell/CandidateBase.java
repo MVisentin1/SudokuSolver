@@ -5,7 +5,7 @@ import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 public abstract class CandidateBase<C extends CellBase<?>> {
     private final int number;
     private C cell;
-    private CandidateHighlightMode mode;
+    private CandidateHighlightMode highlightMode;
     private boolean eliminated;
     private boolean initialized = false;
 
@@ -15,7 +15,7 @@ public abstract class CandidateBase<C extends CellBase<?>> {
             throw new IllegalArgumentException("number must be between 1 and 9");
         }
         this.number = number;
-        this.mode = CandidateHighlightMode.NONE;
+        this.highlightMode = CandidateHighlightMode.NONE;
         this.eliminated = eliminated;
     }
 
@@ -35,8 +35,8 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     C getCell() {
         return cell;
     }
-    CandidateHighlightMode getMode() {
-        return mode;
+    CandidateHighlightMode getHighlightMode() {
+        return highlightMode;
     }
     boolean isEliminated() {
         return eliminated;
@@ -47,9 +47,12 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     }
 
     // ---------- field setters -----------------------
-    void setHighlight(CandidateHighlightMode mode) {
-        assert this.mode != mode : "already set at mode : " + this.mode;
-        this.mode = mode;
+    void setHighlight(CandidateHighlightMode highlightMode) {
+        if (highlightMode == null) {
+            throw new NullPointerException("highlightMode must not be null");
+        }
+        assert this.highlightMode != highlightMode : "already set at mode : " + this.highlightMode;
+        this.highlightMode = highlightMode;
     }
     void setEliminated(boolean eliminated) {
         assert this.eliminated != eliminated : "already set at eliminated : " + this.eliminated;

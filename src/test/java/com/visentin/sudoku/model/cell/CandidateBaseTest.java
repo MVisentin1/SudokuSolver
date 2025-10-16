@@ -34,6 +34,14 @@ class CandidateBaseTest {
     }
 
     @Test
+    void attachCell_SetsCellToCandidate() {
+        TestCandidate c = new TestCandidate(1, false);
+        TestCell cell = createTestCell(false);
+        c.attachCell(cell);
+        assertEquals(cell, c.getCell());
+    }
+
+    @Test
     void constructor_NumberNotBetween1And9_AssertionErrorThrown() {
         final int number = 0;
         assertThrows(IllegalArgumentException.class, () -> new TestCandidate(number, false));
@@ -49,12 +57,17 @@ class CandidateBaseTest {
         assertEquals(1, cf.getNumber());
         assertFalse(ct.isInitialized());
         assertFalse(cf.isInitialized());
-        assertEquals(CandidateHighlightMode.NONE, ct.getMode());
-        assertEquals(CandidateHighlightMode.NONE, cf.getMode());
+        assertEquals(CandidateHighlightMode.NONE, ct.getHighlightMode());
+        assertEquals(CandidateHighlightMode.NONE, cf.getHighlightMode());
         assertTrue(ct.isEliminated());
         assertFalse(cf.isEliminated());
     }
 
+    @Test
+    void setHighlight_NullMode_NullPointerExceptionThrown() {
+        TestCandidate c = new TestCandidate(1, false);
+        assertThrows(NullPointerException.class, () -> c.setHighlight(null));
+    }
     @Test
     void setHighlight_SameMode_AssertionErrorThrown() {
         CandidateHighlightMode mode = CandidateHighlightMode.ON;

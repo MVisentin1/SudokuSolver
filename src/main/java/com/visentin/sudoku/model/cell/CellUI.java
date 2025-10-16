@@ -35,9 +35,9 @@ public class CellUI extends CellBase<CandidateUI> {
     }
 
     // ---------------- mode field property sync ---------------
-    @Override public void setMode(CellHighlightMode mode) {
-        super.setMode(mode);
-        this.mode.set(mode);
+    @Override public void setHighlightMode(CellHighlightMode highlightMode) {
+        super.setHighlightMode(highlightMode);
+        this.mode.set(highlightMode);
     }
 
 }

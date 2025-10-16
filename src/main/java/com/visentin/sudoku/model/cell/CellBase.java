@@ -2,23 +2,21 @@ package com.visentin.sudoku.model.cell;
 
 
 import com.visentin.sudoku.util.enums.CellHighlightMode;
-import com.visentin.sudoku.util.exceptions.CellWrongSolvedStateAccessException;
 
 import java.util.Optional;
 
 public abstract class CellBase<C extends CandidateBase<?>> {
     private int value;
     private final C[] candidates;
-    private CellHighlightMode mode = CellHighlightMode.NONE;
+    private CellHighlightMode highlightMode;
 
     // ------------ constructor -------------------------------
     CellBase(C[] candidates, int value) {
-        if (candidates.length != 9) {
-            throw new IllegalArgumentException("Cell must contain 9 candidates");
-        }
-        if (value < 0 || value > 9) {
-            throw new IllegalArgumentException("invalid value, must be between 0 and 9");
-        }
+        assert candidates != null : "candidates must not be null";
+        assert candidates.length == 9 : "candidates must have 9 candidates";
+        assert value >= 0 && value <= 9 : "value must be between 0 and 9";
+
+        this.highlightMode = CellHighlightMode.NONE;
         this.value = value;
         this.candidates = candidates;
     }
@@ -27,12 +25,15 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     public int getValue() {
         return this.value;
     }
-    public CellHighlightMode getMode() {
-        return mode;
+    public CellHighlightMode getHighlightMode() {
+        return highlightMode;
     }
-    public void setMode(CellHighlightMode mode) {
-        assert this.mode != mode : "already set at mode : " + this.mode;
-        this.mode = mode;
+    public void setHighlightMode(CellHighlightMode highlightMode) {
+        if (highlightMode == null) {
+            throw new NullPointerException("highlightMode must not be null");
+        }
+        assert this.highlightMode != highlightMode : "already set at mode : " + this.highlightMode;
+        this.highlightMode = highlightMode;
     }
 
     // ------------ solved status -------------------------------
@@ -41,7 +42,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     }
     public void solve(int value) {
         valueValidation(value);
-        assert this.value == 0 || this.value != value : "already set at value : " + this.value;
+        assert this.value == 0 : "already set at value : " + this.value;
         this.value = value;
     }
     public void unsolve() {
@@ -61,14 +62,15 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     public void addCandidate(int i) {
         candidateIndexValidation(i);
         if (isSolved()) {
-            throw new CellWrongSolvedStateAccessException("Cannot add candidates to solved cell");
+            throw new IllegalStateException("Cannot add candidates to solved cell");
         }
+        assert this.candidates[i-1].isEliminated() : "candidate already eliminated";
         this.candidates[i-1].setEliminated(false);
     }
     public void removeCandidate(int i){
         candidateIndexValidation(i);
         if (isSolved()) {
-            throw new CellWrongSolvedStateAccessException("Cannot remove candidates to solved cell");
+            throw new IllegalStateException("Cannot remove candidates to solved cell");
         }
         this.candidates[i-1].setEliminated(true);
     }
