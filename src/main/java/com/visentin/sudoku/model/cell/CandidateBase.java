@@ -53,9 +53,4 @@ public abstract class CandidateBase<C extends CellBase<?>> {
         this.accessible = accessible;
     }
 
-    private void ensureCandidateIsAccessible() {
-        if (!isAccessible()) {
-            throw new IllegalStateException("Candidate is not accessible");
-        }
-    }
 }
