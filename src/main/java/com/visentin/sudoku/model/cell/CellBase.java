@@ -12,7 +12,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     private CellHighlightMode mode = CellHighlightMode.NONE;
 
     // ------------ constructor -------------------------------
-    protected CellBase(C[] candidates, int value) {
+    CellBase(C[] candidates, int value) {
         if (candidates.length != 9) {
             throw new IllegalArgumentException("Cell must contain 9 candidates");
         }
@@ -43,24 +43,17 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         valueValidation(value);
         assert this.value == 0 || this.value != value : "already set at value : " + this.value;
         this.value = value;
-        for (C candidate : candidates) {
-            candidate.setAccessible(false);
-        }
     }
     public void unsolve() {
         assert this.value != 0 : "already unsolved";
         this.value = 0;
-        for (C candidate : candidates) {
-            candidate.setAccessible(true);
-        }
     }
 
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
         candidateIndexValidation(i);
-        assert !isSolved() : "Cannot query candidates of a solved cell";
         C candidate = this.candidates[i-1];
-        if (candidate.isEliminated()){
+        if (isSolved() || candidate.isEliminated()){
             return Optional.empty();
         }
         return Optional.of(candidate);

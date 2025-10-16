@@ -7,7 +7,6 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     private C cell;
     private CandidateHighlightMode mode;
     private boolean eliminated;
-    private boolean accessible;
     private boolean initialized = false;
 
     // Constructor
@@ -26,7 +25,6 @@ public abstract class CandidateBase<C extends CellBase<?>> {
         assert cell != null : "Cell must not be null";
 
         this.cell = cell;
-        this.accessible = !cell.isSolved();
         this.initialized = true;
     }
 
@@ -43,9 +41,6 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     boolean isEliminated() {
         return eliminated;
     }
-    boolean isAccessible() {
-        return accessible;
-    }
 
     boolean isInitialized() {
         return initialized;
@@ -59,10 +54,5 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     void setEliminated(boolean eliminated) {
         assert this.eliminated != eliminated : "already set at eliminated : " + this.eliminated;
         this.eliminated = eliminated;
-    }
-
-    void setAccessible(boolean accessible) {
-        assert this.accessible != accessible : "already set at accessible : " + this.accessible;
-        this.accessible = accessible;
     }
 }

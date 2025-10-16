@@ -3,33 +3,11 @@ package com.visentin.sudoku.model.cell;
 import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 import org.junit.jupiter.api.Test;
 
+import static com.visentin.sudoku.model.cell.TestCell.createTestCell;
 import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CandidateBaseTest {
-    
-    static class TestCell extends CellBase<TestCandidate> {
-        TestCell(int value, TestCandidate[] candidates) {
-            super(candidates, value);
-            for (TestCandidate candidate : candidates) {
-                candidate.attachCell(this);
-            }
-        }
-    }
-    static class TestCandidate extends CandidateBase<TestCell> {
-        TestCandidate(int number, boolean eliminated) {
-            super(number, eliminated);
-        }
-    }
-
-    TestCell createTestCell(boolean solved) {
-        TestCandidate[] candidates = new TestCandidate[9];
-        for (int i = 0; i < 9; i++) {
-            candidates[i] = new TestCandidate(i + 1, !solved);
-        }
-        int value = solved ? 2 : 0;
-        return new TestCell(value, candidates);
-    }
 
     @Test
     void attachCell_AlreadyInitialized_AssertionErrorThrown() {
@@ -45,23 +23,6 @@ class CandidateBaseTest {
         assertErrorIfEnabled(() -> c.attachCell(null));
     }
 
-    @Test
-    void attachCell_CellSolved_SetsAccessibleToFalse() {
-        TestCandidate c = new TestCandidate(1, false);
-        TestCell cell = createTestCell(true);
-
-        c.attachCell(cell);
-        assertFalse(c.isAccessible());
-    }
-
-    @Test
-    void attachCell_CellUnsolved_SetsAccessibleToTrue() {
-        TestCandidate c = new TestCandidate(1, false);
-        TestCell cell = createTestCell(false);
-
-        c.attachCell(cell);
-        assertTrue(c.isAccessible());
-    }
 
     @Test
     void attachCell_SetsInitializedToTrue() {
@@ -108,14 +69,5 @@ class CandidateBaseTest {
         TestCandidate c = new TestCandidate(1, false);
         c.setEliminated(eliminated);
         assertErrorIfEnabled(() -> c.setEliminated(eliminated));
-    }
-
-    @Test
-    void setAccessible_AlreadyAccessible_AssertionErrorThrown() {
-        TestCandidate c = new TestCandidate(1, false);
-        boolean solved = true;
-        TestCell cell = createTestCell(solved);
-        c.attachCell(cell);
-        assertErrorIfEnabled(() -> c.setAccessible(!solved));
     }
 }

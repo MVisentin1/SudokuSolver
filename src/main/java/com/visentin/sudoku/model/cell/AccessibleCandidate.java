@@ -16,7 +16,7 @@ public final class AccessibleCandidate<C extends CellBase<?>> {
         if (!candidate.isInitialized()) {
             throw new IllegalStateException("Candidate must be initialized");
         }
-        return candidate.isAccessible()
+        return !candidate.getCell().isSolved()
                 ? Optional.of(new AccessibleCandidate<>(candidate))
                 : Optional.empty();
     }
