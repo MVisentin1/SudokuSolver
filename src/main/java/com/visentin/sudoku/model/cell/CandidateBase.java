@@ -1,13 +1,13 @@
-package com.visentin.sudoku.model.candidate;
+package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.model.cell.CellBase;
 import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 
 public abstract class CandidateBase<C extends CellBase<?>> {
     private final int number;
     private final C cell;
-    private CandidateHighlightMode mode =  CandidateHighlightMode.NONE;
+    private CandidateHighlightMode mode;
     private boolean eliminated;
+    private boolean accessible;
 
     // ------------ constructor ----------------------
     protected CandidateBase(int number, C cell, boolean eliminated) {
@@ -16,10 +16,12 @@ public abstract class CandidateBase<C extends CellBase<?>> {
         }
         this.number = number;
         this.cell = cell;
+        this.mode = CandidateHighlightMode.NONE;
         this.eliminated = eliminated;
+        this.accessible = !cell.isSolved();
     }
 
-    // ----------- field access  ---------------------
+    // ----------- field getters  ---------------------
     public int getNumber() {
         return number;
     }
@@ -29,15 +31,31 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     public CandidateHighlightMode getMode() {
         return mode;
     }
-    public void setMode(CandidateHighlightMode mode) {
-        assert this.mode != mode : "already set at mode : " + this.mode;
-        this.mode = mode;
-    }
     public boolean isEliminated() {
         return eliminated;
+    }
+    public boolean isAccessible() {
+        return accessible;
+    }
+
+    // ---------- field setters -----------------------
+    public void setHighlight(CandidateHighlightMode mode) {
+        assert this.mode != mode : "already set at mode : " + this.mode;
+        this.mode = mode;
     }
     public void setEliminated(boolean eliminated) {
         assert this.eliminated != eliminated : "already set at eliminated : " + this.eliminated;
         this.eliminated = eliminated;
+    }
+
+    void setAccessibility(boolean accessible) {
+        assert this.accessible != accessible : "already set at accessible : " + this.accessible;
+        this.accessible = accessible;
+    }
+
+    private void ensureCandidateIsAccessible() {
+        if (!isAccessible()) {
+            throw new IllegalStateException("Candidate is not accessible");
+        }
     }
 }

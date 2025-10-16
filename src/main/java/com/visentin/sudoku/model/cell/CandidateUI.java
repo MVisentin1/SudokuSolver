@@ -28,8 +28,8 @@ public class CandidateUI extends CandidateBase<CellUI> {
         this.eliminated.set(eliminated);
     }
     // -------------- mode field property sync --------------------
-    @Override public void setMode(CandidateHighlightMode mode) {
-        super.setMode(mode);
+    @Override public void setHighlight(CandidateHighlightMode mode) {
+        super.setHighlight(mode);
         this.mode.set(mode);
     }
 }
