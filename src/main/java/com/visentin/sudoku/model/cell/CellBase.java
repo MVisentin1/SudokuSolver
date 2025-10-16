@@ -29,9 +29,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         return mode;
     }
     public void setMode(CellHighlightMode mode) {
-        if (this.mode == mode) {
-            throw new IllegalStateException("already set at : " + mode);
-        }
+        assert this.mode != mode : "already set at mode : " + this.mode;
         this.mode = mode;
     }
 
@@ -39,17 +37,13 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     public boolean isSolved(){
         return this.value != 0;
     }
-    public void setAsSolved(int value, boolean overwrite) {
+    public void setAsSolved(int value) {
         valueValidation(value);
-        if (!overwrite && this.value != 0) {
-            throw new CellWrongSolvedStateAccessException();
-        }
+        assert this.value == 0 || this.value != value : "already set at value : " + this.value;
         this.value = value;
     }
-    public void setAsUnsolved(boolean overwrite) {
-        if (!overwrite && this.value == 0) {
-            throw new CellWrongSolvedStateAccessException();
-        }
+    public void setAsUnsolved() {
+        assert this.value != 0 : "already unsolved";
         this.value = 0;
     }
 

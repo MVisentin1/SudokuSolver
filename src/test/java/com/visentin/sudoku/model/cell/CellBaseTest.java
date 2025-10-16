@@ -5,6 +5,7 @@ import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 import com.visentin.sudoku.util.enums.CellHighlightMode;
 import org.junit.jupiter.api.Test;
 
+import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CellBaseTest {
@@ -21,7 +22,7 @@ class CellBaseTest {
         }
     }
 
-    // Helper to create a default TestCell with non-eliminated candidates
+    // Helper to create a default unsolved TestCell with non-eliminated candidates
     private TestCell createTestCell() {
         TestCandidate[] candidates = new TestCandidate[9];
         TestCell cell = new TestCell(candidates, 0);
@@ -75,20 +76,34 @@ class CellBaseTest {
     }
 
     @Test
-    void setMode() {
+    void setMode_SameMode_AssertionErrorThrown() {
+        CellHighlightMode mode = CellHighlightMode.ON;
 
+        TestCell c = createTestCell();
+        c.setMode(mode);
+
+        assertErrorIfEnabled(() -> c.setMode(mode));
     }
 
     @Test
-    void setAsSolved() {
+    void setAsSolved_SameValue_AssertionErrorThrown() {
+        TestCell c = createTestCell();
+        int value = 5;
+
+        c.setAsSolved(value);
+        assertErrorIfEnabled(() -> c.setAsSolved(value));
     }
 
     @Test
-    void setAsUnsolved() {
+    void setAsUnsolved_AlreadyUnsolved_AssertionErrorThrown() {
+        TestCell c = createTestCell();
+
+        assertErrorIfEnabled(c::setAsUnsolved);
     }
 
     @Test
     void findCandidate() {
+
     }
 
     @Test
