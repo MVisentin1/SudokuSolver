@@ -13,7 +13,9 @@ public final class AccessibleCandidate<C extends CellBase<?>> {
 
     public static <C extends CellBase<?>>
     Optional<AccessibleCandidate<C>> of (CandidateBase<C> candidate) {
-        assert candidate.isInitialized() : "Candidate must be initialized before wrapping";
+        if (!candidate.isInitialized()) {
+            throw new IllegalStateException("Candidate must be initialized");
+        }
         return candidate.isAccessible()
                 ? Optional.of(new AccessibleCandidate<>(candidate))
                 : Optional.empty();
