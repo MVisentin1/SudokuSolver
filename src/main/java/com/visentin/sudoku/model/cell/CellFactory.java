@@ -1,8 +1,5 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.model.candidate.CandidateSolver;
-import com.visentin.sudoku.model.candidate.CandidateUI;
-
 public class CellFactory {
 
     // ------------------ cellUI creation ---------------------------

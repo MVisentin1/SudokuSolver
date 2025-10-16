@@ -1,6 +1,5 @@
-package com.visentin.sudoku.model.candidate;
+package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.model.cell.CellUI;
 import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 import javafx.beans.property.*;
 
