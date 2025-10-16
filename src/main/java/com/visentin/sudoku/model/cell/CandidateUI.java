@@ -9,8 +9,8 @@ public class CandidateUI extends CandidateBase<CellUI> {
     private final ObjectProperty<CandidateHighlightMode> mode = new SimpleObjectProperty<>(CandidateHighlightMode.NONE);
 
     // -------------- constructor ------------------
-    public CandidateUI(int number, CellUI cell, boolean eliminated) {
-        super(number, cell, eliminated);
+    public CandidateUI(int number, boolean eliminated) {
+        super(number, eliminated);
         this.eliminated.set(eliminated);
     }
 

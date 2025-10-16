@@ -4,21 +4,33 @@ import com.visentin.sudoku.util.enums.CandidateHighlightMode;
 
 public abstract class CandidateBase<C extends CellBase<?>> {
     private final int number;
-    private final C cell;
+    private C cell;
     private CandidateHighlightMode mode;
     private boolean eliminated;
     private boolean accessible;
+    private boolean initialized = false;
 
-    // ------------ constructor ----------------------
-    protected CandidateBase(int number, C cell, boolean eliminated) {
+    // Constructor
+    protected CandidateBase(int number, boolean eliminated) {
         if (number < 1 || number > 9) {
             throw new IllegalArgumentException("number must be between 1 and 9");
         }
         this.number = number;
-        this.cell = cell;
         this.mode = CandidateHighlightMode.NONE;
         this.eliminated = eliminated;
+    }
+
+    // Method for 2-step initialization
+    void attachCell(C cell) {
+        if (initialized) {
+            throw new IllegalStateException("Cell already attached");
+        }
+        if (cell == null) {
+            throw new IllegalArgumentException("Cell cannot be null");
+        }
+        this.cell = cell;
         this.accessible = !cell.isSolved();
+        this.initialized = true;
     }
 
     // ----------- field getters  ---------------------
@@ -36,6 +48,10 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     }
     boolean isAccessible() {
         return accessible;
+    }
+
+    boolean isInitialized() {
+        return initialized;
     }
 
     // ---------- field setters -----------------------

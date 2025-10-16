@@ -15,7 +15,7 @@ class CandidateBaseTest {
     }
     static class TestCandidate extends CandidateBase<TestCell> {
         TestCandidate(int number, TestCell cell, boolean eliminated) {
-            super(number, cell, eliminated);
+            super(number, eliminated);
         }
     }
     @Test

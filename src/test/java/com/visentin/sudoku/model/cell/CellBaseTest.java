@@ -13,7 +13,7 @@ class CellBaseTest {
 
     static class TestCandidate extends CandidateBase<TestCell> {
         protected TestCandidate(int number, TestCell cell, boolean eliminated) {
-            super(number, cell, eliminated);
+            super(number, eliminated);
         }
     }
 

@@ -11,6 +11,9 @@ public class CellUI extends CellBase<CandidateUI> {
     public CellUI(CandidateUI[] candidates, int value) {
         super(candidates, value);
         this.value.set(value);
+        for (CandidateUI candidate : candidates) {
+            candidate.attachCell(this);
+        }
     }
 
     // ---------------- properties -----------------------------

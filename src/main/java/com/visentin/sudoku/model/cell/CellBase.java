@@ -20,11 +20,6 @@ public abstract class CellBase<C extends CandidateBase<?>> {
             throw new IllegalArgumentException("invalid value, must be between 0 and 9");
         }
         this.candidates = candidates;
-        if (value == 0) {
-            setAsUnsolved();
-        } else {
-            setAsSolved(value);
-        }
     }
 
     // ------------ getters setters ----------------------------

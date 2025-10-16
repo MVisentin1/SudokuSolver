@@ -10,9 +10,10 @@ public final class AccessibleCandidate<C extends CellBase<?>> {
     private AccessibleCandidate(CandidateBase<C> candidate) {
         this.candidate = candidate;
     }
-    
+
     public static <C extends CellBase<?>>
     Optional<AccessibleCandidate<C>> of (CandidateBase<C> candidate) {
+        assert candidate.isInitialized() : "Candidate must be initialized before wrapping";
         return candidate.isAccessible()
                 ? Optional.of(new AccessibleCandidate<>(candidate))
                 : Optional.empty();
