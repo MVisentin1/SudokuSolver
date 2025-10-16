@@ -2,14 +2,12 @@ package com.visentin.sudoku.model.candidate;
 
 import com.visentin.sudoku.model.cell.CellBase;
 import com.visentin.sudoku.util.enums.CandidateHighlightMode;
-import com.visentin.sudoku.util.enums.CellHighlightMode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 
 @ExtendWith(MockitoExtension.class)
 class CandidateBaseTest {
@@ -56,41 +54,21 @@ class CandidateBaseTest {
 
 
     @Test
-    void setMode_SameMode_ExceptionThrown() {
-        CandidateHighlightMode mode = CandidateHighlightMode.ON;
-
-        TestCandidate c = new TestCandidate(1, new TestCell(), false);
-        TestCandidate c1 = new TestCandidate(1, new TestCell(), false);
-        c1.setMode(mode);
-
-        assertThrows(Exception.class,  () -> c.setMode(c.getMode()));
-        assertThrows(Exception.class,  () -> c1.setMode(mode));
-    }
-
-    @Test
-    void setMode_DifferentMode_SetsMode() {
+    void setMode_SameMode_AssertionErrorThrown() {
         CandidateHighlightMode mode = CandidateHighlightMode.ON;
 
         TestCandidate c = new TestCandidate(1, new TestCell(), false);
         c.setMode(mode);
 
-        assertEquals(mode, c.getMode());
+        assertErrorIfEnabled(() -> c.setMode(mode));
     }
 
     @Test
-    void setEliminated_SameBool_ExceptionThrown() {
+    void setEliminated_SameBool_AssertionErrorThrown() {
         boolean eliminated = true;
+
         TestCandidate c = new TestCandidate(1, new TestCell(), eliminated);
-        assertThrows(Exception.class,  () -> c.setEliminated(eliminated));
-    }
 
-    @Test
-    void setEliminated_DifferentBool_SetsEliminated() {
-        boolean eliminated = true;
-
-        TestCandidate c = new TestCandidate(1, new TestCell(), !eliminated);
-        c.setEliminated(eliminated);
-
-        assertEquals(eliminated, c.isEliminated());
+        assertErrorIfEnabled(() -> c.setEliminated(eliminated));
     }
 }

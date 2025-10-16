@@ -30,18 +30,14 @@ public abstract class CandidateBase<C extends CellBase<?>> {
         return mode;
     }
     public void setMode(CandidateHighlightMode mode) {
-        if (this.mode == mode) {
-            throw new IllegalStateException("already set at mode : " + mode);
-        }
+        assert this.mode != mode : "already set at mode : " + this.mode;
         this.mode = mode;
     }
     public boolean isEliminated() {
         return eliminated;
     }
     public void setEliminated(boolean eliminated) {
-        if (this.eliminated == eliminated) {
-            throw new IllegalStateException("already eliminated");
-        }
+        assert this.eliminated != eliminated : "already set at eliminated : " + this.eliminated;
         this.eliminated = eliminated;
     }
 }
