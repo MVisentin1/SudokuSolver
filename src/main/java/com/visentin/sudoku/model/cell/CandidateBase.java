@@ -22,35 +22,34 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     }
 
     // ----------- field getters  ---------------------
-    public int getNumber() {
+    int getNumber() {
         return number;
     }
-    public C getCell() {
+    C getCell() {
         return cell;
     }
-    public CandidateHighlightMode getMode() {
+    CandidateHighlightMode getMode() {
         return mode;
     }
-    public boolean isEliminated() {
+    boolean isEliminated() {
         return eliminated;
     }
-    public boolean isAccessible() {
+    boolean isAccessible() {
         return accessible;
     }
 
     // ---------- field setters -----------------------
-    public void setHighlight(CandidateHighlightMode mode) {
+    void setHighlight(CandidateHighlightMode mode) {
         assert this.mode != mode : "already set at mode : " + this.mode;
         this.mode = mode;
     }
-    public void setEliminated(boolean eliminated) {
+    void setEliminated(boolean eliminated) {
         assert this.eliminated != eliminated : "already set at eliminated : " + this.eliminated;
         this.eliminated = eliminated;
     }
 
-    void setAccessibility(boolean accessible) {
+    void setAccessible(boolean accessible) {
         assert this.accessible != accessible : "already set at accessible : " + this.accessible;
         this.accessible = accessible;
     }
-
 }
