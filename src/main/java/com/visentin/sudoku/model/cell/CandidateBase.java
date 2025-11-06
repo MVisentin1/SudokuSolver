@@ -29,32 +29,32 @@ public abstract class CandidateBase<C extends CellBase<?>> {
     }
 
     // ----------- field getters  ---------------------
-    int getNumber() {
+    public int getNumber() {
         return number;
     }
-    C getCell() {
+    public C getCell() {
         return cell;
     }
-    CandidateHighlightMode getHighlightMode() {
+    public CandidateHighlightMode getHighlightMode() {
         return highlightMode;
     }
-    boolean isEliminated() {
+    public boolean isEliminated() {
         return eliminated;
     }
 
-    boolean isInitialized() {
+    public boolean isInitialized() {
         return initialized;
     }
 
     // ---------- field setters -----------------------
-    void setHighlight(CandidateHighlightMode highlightMode) {
+    public void setHighlight(CandidateHighlightMode highlightMode) {
         if (highlightMode == null) {
             throw new NullPointerException("highlightMode must not be null");
         }
         assert this.highlightMode != highlightMode : "already set at mode : " + this.highlightMode;
         this.highlightMode = highlightMode;
     }
-    void setEliminated(boolean eliminated) {
+    public void setEliminated(boolean eliminated) {
         assert this.eliminated != eliminated : "already set at eliminated : " + this.eliminated;
         this.eliminated = eliminated;
     }
