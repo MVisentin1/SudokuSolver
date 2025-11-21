@@ -6,7 +6,7 @@ import javafx.beans.property.*;
 public class CandidateUI extends CandidateBase<CellUI> {
 
     private final BooleanProperty eliminated = new SimpleBooleanProperty();
-    private final ObjectProperty<CandidateHighlightMode> mode = new SimpleObjectProperty<>(CandidateHighlightMode.NONE);
+    private final ObjectProperty<CandidateHighlightMode> highlightMode = new SimpleObjectProperty<>(CandidateHighlightMode.NONE);
 
     // -------------- constructor ------------------
     public CandidateUI(int number, boolean eliminated) {
@@ -18,8 +18,8 @@ public class CandidateUI extends CandidateBase<CellUI> {
     public ReadOnlyBooleanProperty eliminatedProperty() {
         return eliminated;
     }
-    public ReadOnlyObjectProperty<CandidateHighlightMode> modeProperty() {
-        return mode;
+    public ReadOnlyObjectProperty<CandidateHighlightMode> highlightModeProperty() {
+        return highlightMode;
     }
 
     // -------------- eliminated field property sync --------------
@@ -30,6 +30,6 @@ public class CandidateUI extends CandidateBase<CellUI> {
     // -------------- mode field property sync --------------------
     @Override public void setHighlight(CandidateHighlightMode highlightMode) {
         super.setHighlight(highlightMode);
-        this.mode.set(highlightMode);
+        this.highlightMode.set(highlightMode);
     }
 }

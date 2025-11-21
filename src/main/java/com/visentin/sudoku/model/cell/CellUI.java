@@ -5,7 +5,7 @@ import javafx.beans.property.*;
 
 public class CellUI extends CellBase<CandidateUI> {
     private final IntegerProperty value = new SimpleIntegerProperty();
-    private final ObjectProperty<CellHighlightMode> mode = new SimpleObjectProperty<>(CellHighlightMode.NONE);
+    private final ObjectProperty<CellHighlightMode> highlightMode = new SimpleObjectProperty<>(CellHighlightMode.NONE);
 
     // ---------------- constructor ---------------------------
     public CellUI(CandidateUI[] candidates, int value) {
@@ -20,8 +20,8 @@ public class CellUI extends CellBase<CandidateUI> {
     public ReadOnlyIntegerProperty valueProperty() {
         return value;
     }
-    public ReadOnlyObjectProperty<CellHighlightMode> modeProperty() {
-        return mode;
+    public ReadOnlyObjectProperty<CellHighlightMode> highlightModeProperty() {
+        return highlightMode;
     }
 
     // ---------------- value field property sync --------------
@@ -37,7 +37,7 @@ public class CellUI extends CellBase<CandidateUI> {
     // ---------------- mode field property sync ---------------
     @Override public void setHighlightMode(CellHighlightMode highlightMode) {
         super.setHighlightMode(highlightMode);
-        this.mode.set(highlightMode);
+        this.highlightMode.set(highlightMode);
     }
 
 }
