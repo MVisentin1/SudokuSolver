@@ -18,8 +18,20 @@ class CellBaseTest {
         return new TestCell(candidates, solved ? value : 0);
     }
     @Test
-    void constructor_NullCandidates_AssertionErrorThrown() {
-        assertErrorIfEnabled(() -> new TestCell(null, 0));
+    void constructor_NullCandidates_NullPointerExceptionThrown() {
+        assertThrows(NullPointerException.class, () -> new TestCell(null, 0));
+    }
+
+    @Test
+    void constructor_CandidatesNullElement_NullPointerExceptionThrown() {
+        TestCandidate[] candidates = new TestCandidate[9];
+        for (int i = 0; i < 9; i++) {
+            candidates[i] = new TestCandidate(i + 1, false);
+            if (i == 4) {
+                candidates[i] = null;
+            }
+        }
+        assertThrows(NullPointerException.class, () -> new TestCell(candidates, 0));
     }
 
     @Test

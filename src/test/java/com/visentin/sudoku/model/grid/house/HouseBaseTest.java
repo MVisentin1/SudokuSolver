@@ -11,13 +11,8 @@ import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 
 public class HouseBaseTest {
     @Test
-    void constructor_NullArray_AssertionErrorThrown() {
-        assertErrorIfEnabled(() -> new TestHouse(null));
-    }
-
-    @Test
-    void constructor_EmptyArray_AssertionErrorThrown() {
-        assertErrorIfEnabled(() -> new TestHouse(new TestCell[0]));
+    void constructor_NullArray_NullPointerExceptionThrown() {
+        assertThrows(NullPointerException.class, () -> new TestHouse(null));
     }
 
     @Test
@@ -28,10 +23,10 @@ public class HouseBaseTest {
     }
 
     @Test
-    void constructor_ArrayContainsNull_AssertionErrorThrown() {
+    void constructor_ArrayContainsNull_NullPointerExceptionThrown() {
         TestCell cell = createTestCell(true);
         TestCell[] cells = {cell, cell, cell, cell, cell, cell, cell, cell, null};
-        assertErrorIfEnabled(() -> new TestHouse(cells));
+        assertThrows(NullPointerException.class, () -> new TestHouse(cells));
     }
 
     @Test
@@ -45,7 +40,7 @@ public class HouseBaseTest {
     }
 
     @Test
-    void getCell_InvalidIndex_AssertionErrorThrown() {
+    void getCell_InvalidIndex_ThrowsIndexOutOfBoundsException() {
         TestHouse house = TestHouse.createTestHouse(new HashSet<>());
         assertThrows(IndexOutOfBoundsException.class, () -> house.getCell(0));
         assertThrows(IndexOutOfBoundsException.class, () -> house.getCell(10));

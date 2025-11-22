@@ -3,22 +3,21 @@ package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.util.enums.CellHighlightMode;
 
+import java.util.List;
 import java.util.Optional;
 
 public abstract class CellBase<C extends CandidateBase<?>> {
     private int value;
-    private final C[] candidates;
+    private final List<C> candidates;
     private CellHighlightMode highlightMode;
 
     // ------------ constructor -------------------------------
     CellBase(C[] candidates, int value) {
-        assert candidates != null : "candidates must not be null";
         assert candidates.length == 9 : "candidates must have 9 candidates";
         assert value >= 0 && value <= 9 : "value must be between 0 and 9";
-
         this.highlightMode = CellHighlightMode.NONE;
         this.value = value;
-        this.candidates = candidates;
+        this.candidates = List.of(candidates);
     }
 
     // ------------  getters setters ----------------------------
@@ -53,7 +52,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
         candidateIndexValidation(i);
-        C candidate = this.candidates[i-1];
+        C candidate = this.candidates.get(i-1);
         if (isSolved() || candidate.isEliminated()){
             return Optional.empty();
         }
@@ -64,15 +63,15 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         if (isSolved()) {
             throw new IllegalStateException("Cannot add candidates to solved cell");
         }
-        assert this.candidates[i-1].isEliminated() : "candidate already eliminated";
-        this.candidates[i-1].setEliminated(false);
+        assert this.candidates.get(i-1).isEliminated() : "candidate already eliminated";
+        this.candidates.get(i-1).setEliminated(false);
     }
     public void removeCandidate(int i){
         candidateIndexValidation(i);
         if (isSolved()) {
             throw new IllegalStateException("Cannot remove candidates to solved cell");
         }
-        this.candidates[i-1].setEliminated(true);
+        this.candidates.get(i-1).setEliminated(true);
     }
 
     // ------------ private helpers -----------------------------
