@@ -20,7 +20,7 @@ public abstract class HouseBase<C extends CellBase<?>> {
         if(i < 1 || i > 9){
             throw new IndexOutOfBoundsException("index must be 1 to 9");
         }
-        return this.cells[i];
+        return this.cells[i-1];
     }
     public C[] getCells() {
         return this.cells;

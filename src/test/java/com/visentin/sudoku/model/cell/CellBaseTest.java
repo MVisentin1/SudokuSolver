@@ -23,7 +23,7 @@ class CellBaseTest {
     }
 
     @Test
-    void constructor_CandidatesLengthNot9_ThrowAssertionError() {
+    void constructor_CandidatesLengthNot9_AssertionErrorThrown() {
         int length = 8;
         assertErrorIfEnabled(() -> new TestCell(new TestCandidate[length], 0));
     }
