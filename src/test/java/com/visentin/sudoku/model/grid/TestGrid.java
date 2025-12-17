@@ -32,4 +32,5 @@ public class TestGrid extends GridBase<TestHouse> {
         }
         return houses;
     }
+
 }

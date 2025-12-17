@@ -2,6 +2,7 @@ package com.visentin.sudoku.model.grid;
 
 import com.visentin.sudoku.model.grid.house.HouseBase;
 
+
 import java.util.List;
 
 public abstract class GridBase<C extends HouseBase<?>> {
@@ -10,12 +11,14 @@ public abstract class GridBase<C extends HouseBase<?>> {
     private final List<C> boxes;
 
     GridBase(List<C> rows, List<C> columns, List<C> boxes) {
-        this.rows = List.copyOf(rows);
-        this.columns = List.copyOf(columns);
-        this.boxes = List.copyOf(boxes);
         assert rows.size() == 9 : "rows must have 9 houses";
         assert columns.size() == 9 : "columns must have 9 houses";
         assert boxes.size() == 9 : "boxes must have 9 houses";
+
+        this.rows = List.copyOf(rows);
+        this.columns = List.copyOf(columns);
+        this.boxes = List.copyOf(boxes);
+
     }
 
     public C getRow(int i) {

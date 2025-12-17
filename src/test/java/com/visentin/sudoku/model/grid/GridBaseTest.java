@@ -30,7 +30,7 @@ public class GridBaseTest {
     }
 
     @Test
-    void constructor_houseListContainsNull_throwsNullPointerException() {
+    void constructor_houseListContainsNull_throwsAssertionError() {
         List<TestHouse> rows = new ArrayList<>(9);
         List<TestHouse> columns = new ArrayList<>(9);
         List<TestHouse> boxes = new ArrayList<>(9);
@@ -44,7 +44,20 @@ public class GridBaseTest {
             }
         }
 
-        assertThrows(NullPointerException.class, () -> new TestGrid(rows, columns, boxes));
+        assertErrorIfEnabled(() -> new TestGrid(rows, columns, boxes));
+    }
+
+    @Test
+    void constructor_correctInput_correctOrder() {
+        List<TestHouse> rows = TestGrid.createTestHouseList();
+        List<TestHouse> columns = TestGrid.createTestHouseList();
+        List<TestHouse> boxes = TestGrid.createTestHouseList();
+        TestGrid grid = new TestGrid(rows, columns, boxes);
+        for (int i = 1; i < 10; i++) {
+            assertEquals(rows.get(i-1), grid.getRow(i));
+            assertEquals(columns.get(i-1), grid.getColumn(i));
+            assertEquals(boxes.get(i-1), grid.getBox(i));
+        }
     }
 
     @Test
