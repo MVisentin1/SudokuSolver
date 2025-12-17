@@ -1,13 +1,13 @@
 package com.visentin.sudoku.model.cell;
 
-public abstract class CandidateBase<C extends CellBase<?>> {
+public abstract class BaseCandidate<C extends BaseCell<?>> {
     private final int number;
     private C cell;
     private boolean eliminated;
     private boolean initialized = false;
 
     // Constructor
-    CandidateBase(int number, boolean eliminated) {
+    BaseCandidate(int number, boolean eliminated) {
         if (number < 1 || number > 9) {
             throw new IllegalArgumentException("number must be between 1 and 9");
         }

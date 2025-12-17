@@ -3,12 +3,12 @@ package com.visentin.sudoku.model.cell;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class CellBase<C extends CandidateBase<?>> {
+public abstract class BaseCell<C extends BaseCandidate<?>> {
     private int value;
     private final List<C> candidates;
 
     // ------------ constructor -------------------------------
-    CellBase(C[] candidates, int value) {
+    BaseCell(C[] candidates, int value) {
         assert candidates.length == 9 : "candidates must have 9 candidates";
         assert value >= 0 && value <= 9 : "value must be between 0 and 9";
         this.value = value;

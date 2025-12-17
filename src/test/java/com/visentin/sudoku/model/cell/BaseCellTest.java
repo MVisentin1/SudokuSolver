@@ -7,7 +7,7 @@ import java.util.Optional;
 import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CellBaseTest {
+class BaseCellTest {
 
     private static TestCell createTestCell(boolean solved, int value, boolean eliminated) {
         TestCandidate[] candidates = new TestCandidate[9];

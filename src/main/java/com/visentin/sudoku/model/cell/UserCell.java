@@ -4,7 +4,7 @@ import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
 import com.visentin.sudoku.util.enums.UserCellHighlightMode;
 import javafx.beans.property.*;
 
-public class CellUI extends CellBase<CandidateUI> {
+public class UserCell extends BaseCell<UserCandidate> {
     private final IntegerProperty value = new SimpleIntegerProperty();
     private final ObjectProperty<SolverCellHighlightMode> solverHighlightMode
             = new SimpleObjectProperty<>(SolverCellHighlightMode.NONE);
@@ -12,22 +12,22 @@ public class CellUI extends CellBase<CandidateUI> {
             = new SimpleObjectProperty<>(UserCellHighlightMode.NONE);
 
     // ---------------- constructor ---------------------------
-    public CellUI(CandidateUI[] candidates, int value) {
+    public UserCell(UserCandidate[] candidates, int value) {
         super(candidates, value);
         this.value.set(value);
-        for (CandidateUI candidate : candidates) {
+        for (UserCandidate candidate : candidates) {
             candidate.attachCell(this);
         }
     }
 
     // ---------------- properties -----------------------------
-    public ReadOnlyIntegerProperty valueProperty() {
+    public ReadOnlyIntegerProperty getValueProperty() {
         return value;
     }
-    public ReadOnlyObjectProperty<SolverCellHighlightMode> solverHighlightModeProperty() {
+    public ReadOnlyObjectProperty<SolverCellHighlightMode> getSolverHighlightModeProperty() {
         return solverHighlightMode;
     }
-    public ReadOnlyObjectProperty<UserCellHighlightMode> userHighlightModeProperty() {
+    public ReadOnlyObjectProperty<UserCellHighlightMode> getUserHighlightModeProperty() {
         return userHighlightMode;
     }
 

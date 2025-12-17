@@ -1,16 +1,16 @@
 package com.visentin.sudoku.model.grid;
 
-import com.visentin.sudoku.model.grid.house.HouseBase;
+import com.visentin.sudoku.model.grid.house.BaseHouse;
 
 
 import java.util.List;
 
-public abstract class GridBase<C extends HouseBase<?>> {
+public abstract class BaseGrid<C extends BaseHouse<?>> {
     private final List<C> rows;
     private final List<C> columns;
     private final List<C> boxes;
 
-    GridBase(List<C> rows, List<C> columns, List<C> boxes) {
+    BaseGrid(List<C> rows, List<C> columns, List<C> boxes) {
         assert rows.size() == 9 : "rows must have 9 houses";
         assert columns.size() == 9 : "columns must have 9 houses";
         assert boxes.size() == 9 : "boxes must have 9 houses";

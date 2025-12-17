@@ -6,7 +6,7 @@ import static com.visentin.sudoku.model.cell.TestCell.createTestCell;
 import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CandidateBaseTest {
+class BaseCandidateTest {
 
     @Test
     void attachCell_AlreadyInitialized_AssertionErrorThrown() {

@@ -1,14 +1,14 @@
 package com.visentin.sudoku.model.grid.house;
 
-import com.visentin.sudoku.model.cell.CellBase;
+import com.visentin.sudoku.model.cell.BaseCell;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class HouseBase<C extends CellBase<?>> {
+public abstract class BaseHouse<C extends BaseCell<?>> {
     private final List<C> cells;
-    HouseBase(C[] cells) {
+    BaseHouse(C[] cells) {
         assert cells.length == 9 : "cells must have 9 cells";
         this.cells = List.of(cells);
     }

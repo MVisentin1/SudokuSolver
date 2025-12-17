@@ -1,11 +1,11 @@
 package com.visentin.sudoku.model.cell;
 
-public class CellSolver extends CellBase<CandidateSolver> {
+public class SolverCell extends BaseCell<SolverCandidate> {
 
     // -------------------- constructor -----------------------------
-    public CellSolver(CandidateSolver[] candidates, int value) {
+    public SolverCell(SolverCandidate[] candidates, int value) {
         super(candidates, value);
-        for (CandidateSolver candidate : candidates) {
+        for (SolverCandidate candidate : candidates) {
             candidate.attachCell(this);
         }
     }

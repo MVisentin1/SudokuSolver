@@ -7,7 +7,7 @@ import java.util.List;
 
 import static com.visentin.sudoku.model.grid.house.TestHouse.createTestHouse;
 
-public class TestGrid extends GridBase<TestHouse> {
+public class TestGrid extends BaseGrid<TestHouse> {
 
     TestGrid(List<TestHouse> rows, List<TestHouse> columns, List<TestHouse> boxes) {
         super(rows, columns, boxes);

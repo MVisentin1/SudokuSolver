@@ -9,7 +9,7 @@ import static com.visentin.sudoku.model.cell.TestCell.createTestCell;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 
-public class HouseBaseTest {
+public class BaseHouseTest {
     @Test
     void constructor_NullArray_NullPointerExceptionThrown() {
         assertThrows(NullPointerException.class, () -> new TestHouse(null));

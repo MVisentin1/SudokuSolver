@@ -9,7 +9,7 @@ import java.util.List;
 import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GridBaseTest {
+public class BaseGridTest {
 
     @Test
     void constructor_houseListIsNull_throwsNullPointerException() {
