@@ -1,5 +1,5 @@
 package com.visentin.sudoku.util.enums;
 
-public enum CellHighlightMode {
+public enum SolverCandidateHighlightMode {
     NONE, ON, OFF
 }

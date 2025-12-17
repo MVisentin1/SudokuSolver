@@ -1,12 +1,16 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.util.enums.CandidateHighlightMode;
+import com.visentin.sudoku.util.enums.SolverCandidateHighlightMode;
+import com.visentin.sudoku.util.enums.UserCandidateHighlightMode;
 import javafx.beans.property.*;
 
 public class CandidateUI extends CandidateBase<CellUI> {
 
     private final BooleanProperty eliminated = new SimpleBooleanProperty();
-    private final ObjectProperty<CandidateHighlightMode> highlightMode = new SimpleObjectProperty<>(CandidateHighlightMode.NONE);
+    private final ObjectProperty<SolverCandidateHighlightMode> solverHighlightMode
+            = new SimpleObjectProperty<>(SolverCandidateHighlightMode.NONE);
+    private final ObjectProperty<UserCandidateHighlightMode> userHighlightMode
+            = new SimpleObjectProperty<>(UserCandidateHighlightMode.NONE);
 
     // -------------- constructor ------------------
     public CandidateUI(int number, boolean eliminated) {
@@ -18,8 +22,11 @@ public class CandidateUI extends CandidateBase<CellUI> {
     public ReadOnlyBooleanProperty eliminatedProperty() {
         return eliminated;
     }
-    public ReadOnlyObjectProperty<CandidateHighlightMode> highlightModeProperty() {
-        return highlightMode;
+    public ReadOnlyObjectProperty<SolverCandidateHighlightMode> solverHighlightModeProperty() {
+        return solverHighlightMode;
+    }
+    public ReadOnlyObjectProperty<UserCandidateHighlightMode> userHighlightModeProperty() {
+        return userHighlightMode;
     }
 
     // -------------- eliminated field property sync --------------
@@ -28,8 +35,24 @@ public class CandidateUI extends CandidateBase<CellUI> {
         this.eliminated.set(eliminated);
     }
     // -------------- mode field property sync --------------------
-    @Override public void setHighlight(CandidateHighlightMode highlightMode) {
-        super.setHighlight(highlightMode);
-        this.highlightMode.set(highlightMode);
+    public SolverCandidateHighlightMode getSolverHighlightMode() {
+        return solverHighlightMode.get();
+    }
+    public void setSolverHighlightMode(SolverCandidateHighlightMode solverHighlightMode) {
+        if (solverHighlightMode == null) {
+            throw new NullPointerException("highlightMode must not be null");
+        }
+        assert this.solverHighlightMode.get() != solverHighlightMode : "already set at mode : " + solverHighlightMode;
+        this.solverHighlightMode.set(solverHighlightMode);
+    }
+    public UserCandidateHighlightMode getUserHighlightMode() {
+        return userHighlightMode.get();
+    }
+    public void setUserHighlightMode(UserCandidateHighlightMode userHighlightMode) {
+        if (userHighlightMode == null) {
+            throw new NullPointerException("highlightMode must not be null");
+        }
+        assert this.userHighlightMode.get() != userHighlightMode : "already set at mode : " + userHighlightMode;
+        this.userHighlightMode.set(userHighlightMode);
     }
 }

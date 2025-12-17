@@ -1,11 +1,15 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.util.enums.CellHighlightMode;
+import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
+import com.visentin.sudoku.util.enums.UserCellHighlightMode;
 import javafx.beans.property.*;
 
 public class CellUI extends CellBase<CandidateUI> {
     private final IntegerProperty value = new SimpleIntegerProperty();
-    private final ObjectProperty<CellHighlightMode> highlightMode = new SimpleObjectProperty<>(CellHighlightMode.NONE);
+    private final ObjectProperty<SolverCellHighlightMode> solverHighlightMode
+            = new SimpleObjectProperty<>(SolverCellHighlightMode.NONE);
+    private final ObjectProperty<UserCellHighlightMode> userHighlightMode
+            = new SimpleObjectProperty<>(UserCellHighlightMode.NONE);
 
     // ---------------- constructor ---------------------------
     public CellUI(CandidateUI[] candidates, int value) {
@@ -20,8 +24,8 @@ public class CellUI extends CellBase<CandidateUI> {
     public ReadOnlyIntegerProperty valueProperty() {
         return value;
     }
-    public ReadOnlyObjectProperty<CellHighlightMode> highlightModeProperty() {
-        return highlightMode;
+    public ReadOnlyObjectProperty<SolverCellHighlightMode> solverHighlightModeProperty() {
+        return solverHighlightMode;
     }
 
     // ---------------- value field property sync --------------
@@ -35,9 +39,25 @@ public class CellUI extends CellBase<CandidateUI> {
     }
 
     // ---------------- mode field property sync ---------------
-    @Override public void setHighlightMode(CellHighlightMode highlightMode) {
-        super.setHighlightMode(highlightMode);
-        this.highlightMode.set(highlightMode);
+    public SolverCellHighlightMode getSolverHighlightMode() {
+        return solverHighlightMode.get();
+    }
+    public void setSolverHighlightMode(SolverCellHighlightMode solverHighlightMode) {
+        if (solverHighlightMode == null) {
+            throw new NullPointerException("solverHighlightMode must not be null");
+        }
+        assert this.solverHighlightMode.get() != solverHighlightMode : "already set at mode : " + this.solverHighlightMode;
+        this.solverHighlightMode.set(solverHighlightMode);
+    }
+    public UserCellHighlightMode getUserHighlightMode() {
+        return userHighlightMode.get();
+    }
+    public void setUserHighlightMode(UserCellHighlightMode userHighlightMode) {
+        if (userHighlightMode == null) {
+            throw new NullPointerException("userHighlightMode must not be null");
+        }
+        assert this.userHighlightMode.get() != userHighlightMode : "already set at mode : " + this.userHighlightMode;
+        this.userHighlightMode.set(userHighlightMode);
     }
 
 }

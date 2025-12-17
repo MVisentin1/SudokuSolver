@@ -1,6 +1,6 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.util.enums.CandidateHighlightMode;
+import com.visentin.sudoku.util.enums.SolverCandidateHighlightMode;
 import org.junit.jupiter.api.Test;
 
 import static com.visentin.sudoku.model.cell.TestCell.createTestCell;
@@ -57,23 +57,8 @@ class CandidateBaseTest {
         assertEquals(1, cf.getNumber());
         assertFalse(ct.isInitialized());
         assertFalse(cf.isInitialized());
-        assertEquals(CandidateHighlightMode.NONE, ct.getHighlightMode());
-        assertEquals(CandidateHighlightMode.NONE, cf.getHighlightMode());
         assertTrue(ct.isEliminated());
         assertFalse(cf.isEliminated());
-    }
-
-    @Test
-    void setHighlight_NullMode_NullPointerExceptionThrown() {
-        TestCandidate c = new TestCandidate(1, false);
-        assertThrows(NullPointerException.class, () -> c.setHighlight(null));
-    }
-    @Test
-    void setHighlight_SameMode_AssertionErrorThrown() {
-        CandidateHighlightMode mode = CandidateHighlightMode.ON;
-        TestCandidate c = new TestCandidate(1, false);
-        c.setHighlight(mode);
-        assertErrorIfEnabled(() -> c.setHighlight(mode));
     }
 
     @Test

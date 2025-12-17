@@ -1,7 +1,7 @@
 package com.visentin.sudoku.model.cell;
 
 
-import com.visentin.sudoku.util.enums.CellHighlightMode;
+import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,13 +9,11 @@ import java.util.Optional;
 public abstract class CellBase<C extends CandidateBase<?>> {
     private int value;
     private final List<C> candidates;
-    private CellHighlightMode highlightMode;
 
     // ------------ constructor -------------------------------
     CellBase(C[] candidates, int value) {
         assert candidates.length == 9 : "candidates must have 9 candidates";
         assert value >= 0 && value <= 9 : "value must be between 0 and 9";
-        this.highlightMode = CellHighlightMode.NONE;
         this.value = value;
         this.candidates = List.of(candidates);
     }
@@ -24,16 +22,7 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     public int getValue() {
         return this.value;
     }
-    public CellHighlightMode getHighlightMode() {
-        return highlightMode;
-    }
-    public void setHighlightMode(CellHighlightMode highlightMode) {
-        if (highlightMode == null) {
-            throw new NullPointerException("highlightMode must not be null");
-        }
-        assert this.highlightMode != highlightMode : "already set at mode : " + this.highlightMode;
-        this.highlightMode = highlightMode;
-    }
+
 
     // ------------ solved status -------------------------------
     public boolean isSolved(){
