@@ -1,8 +1,5 @@
 package com.visentin.sudoku.model.cell;
 
-
-import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
-
 import java.util.List;
 import java.util.Optional;
 

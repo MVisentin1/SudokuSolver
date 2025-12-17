@@ -27,6 +27,9 @@ public class CellUI extends CellBase<CandidateUI> {
     public ReadOnlyObjectProperty<SolverCellHighlightMode> solverHighlightModeProperty() {
         return solverHighlightMode;
     }
+    public ReadOnlyObjectProperty<UserCellHighlightMode> userHighlightModeProperty() {
+        return userHighlightMode;
+    }
 
     // ---------------- value field property sync --------------
     @Override public void solve(int value) {

@@ -1,6 +1,5 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.util.enums.SolverCandidateHighlightMode;
 import org.junit.jupiter.api.Test;
 
 import static com.visentin.sudoku.model.cell.TestCell.createTestCell;

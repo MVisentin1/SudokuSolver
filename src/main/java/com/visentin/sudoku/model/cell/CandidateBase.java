@@ -1,7 +1,5 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.util.enums.SolverCandidateHighlightMode;
-
 public abstract class CandidateBase<C extends CellBase<?>> {
     private final int number;
     private C cell;
