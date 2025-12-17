@@ -109,10 +109,10 @@ class CellBaseTest {
     }
 
     @Test
-    void find_InvalidCandidate_IllegalArgumentExceptionThrown() {
+    void find_InvalidCandidate_ArrayIndexOutOfBoundsExceptionThrown() {
         TestCell cell = createTestCell(false, 0, false);
-        assertThrows(IllegalArgumentException.class, () -> cell.findCandidate(0));
-        assertThrows(IllegalArgumentException.class, () -> cell.findCandidate(10));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.findCandidate(0));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.findCandidate(10));
     }
     @Test
     void find_CandidateAlreadyEliminated_OptionalEmptyReturned() {
@@ -131,10 +131,10 @@ class CellBaseTest {
     }
 
     @Test
-    void addCandidate_InvalidCandidate_IllegalArgumentExceptionThrown() {
+    void addCandidate_InvalidCandidate_ArrayIndexOutOfBoundsExceptionThrown() {
         TestCell cell = createTestCell(false, 0, false);
-        assertThrows(IllegalArgumentException.class, () -> cell.addCandidate(0));
-        assertThrows(IllegalArgumentException.class, () -> cell.addCandidate(10));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.addCandidate(0));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.addCandidate(10));
     }
     @Test
     void addCandidate_CellIsSolved_IllegalStateExceptionThrown() {
@@ -150,10 +150,10 @@ class CellBaseTest {
     }
 
     @Test
-    void removeCandidate_InvalidCandidate_IllegalArgumentExceptionThrown() {
+    void removeCandidate_InvalidCandidate_ArrayIndexOutOfBoundsExceptionThrown() {
         TestCell cell = createTestCell(false, 0, false);
-        assertThrows(IllegalArgumentException.class, () -> cell.removeCandidate(0));
-        assertThrows(IllegalArgumentException.class, () -> cell.removeCandidate(10));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.removeCandidate(0));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.removeCandidate(10));
     }
 
     @Test

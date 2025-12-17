@@ -1,13 +1,12 @@
 package com.visentin.sudoku.model.grid;
 
-import com.visentin.sudoku.model.cell.CellUI;
-import com.visentin.sudoku.model.grid.house.HouseBase;
+import com.visentin.sudoku.model.grid.house.HouseUI;
 
 import java.util.List;
 
-public class GridUI extends GridBase<CellUI> {
+public class GridUI extends GridBase<HouseUI> {
 
-    GridUI(List<HouseBase<CellUI>> rows, List<HouseBase<CellUI>> columns, List<HouseBase<CellUI>> boxes) {
+    GridUI(List<HouseUI> rows, List<HouseUI> columns, List<HouseUI> boxes) {
         super(rows, columns, boxes);
     }
 }

@@ -51,7 +51,6 @@ public abstract class CellBase<C extends CandidateBase<?>> {
 
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
-        candidateIndexValidation(i);
         C candidate = this.candidates.get(i-1);
         if (isSolved() || candidate.isEliminated()){
             return Optional.empty();
@@ -59,7 +58,6 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         return Optional.of(candidate);
     }
     public void addCandidate(int i) {
-        candidateIndexValidation(i);
         if (isSolved()) {
             throw new IllegalStateException("Cannot add candidates to solved cell");
         }
@@ -67,7 +65,6 @@ public abstract class CellBase<C extends CandidateBase<?>> {
         this.candidates.get(i-1).setEliminated(false);
     }
     public void removeCandidate(int i){
-        candidateIndexValidation(i);
         if (isSolved()) {
             throw new IllegalStateException("Cannot remove candidates to solved cell");
         }
@@ -78,11 +75,6 @@ public abstract class CellBase<C extends CandidateBase<?>> {
     private void valueValidation(int i) {
         if (i < 1 || i > 9) {
             throw new IllegalArgumentException("invalid value");
-        }
-    }
-    private void candidateIndexValidation(int i) {
-        if (i < 1 || i > 9) {
-            throw new IllegalArgumentException("invalid candidate");
         }
     }
 

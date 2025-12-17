@@ -4,8 +4,6 @@ import com.visentin.sudoku.model.cell.TestCell;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestHouse extends HouseBase<TestCell> {
     TestHouse(TestCell[] cells) {
@@ -22,5 +20,9 @@ public class TestHouse extends HouseBase<TestCell> {
             }
         }
         return new TestHouse(cells);
+    }
+
+    public static TestHouse createTestHouse() {
+         return createTestHouse(Set.of(1,2,3,4,7,8,9));
     }
 }

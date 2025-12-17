@@ -1,13 +1,12 @@
 package com.visentin.sudoku.model.grid;
 
-import com.visentin.sudoku.model.cell.CellSolver;
-import com.visentin.sudoku.model.grid.house.HouseBase;
+import com.visentin.sudoku.model.grid.house.HouseSolver;
 
 import java.util.List;
 
-public class GridSolver extends GridBase<CellSolver>{
+public class GridSolver extends GridBase<HouseSolver>{
 
-    GridSolver(List<HouseBase<CellSolver>> rows, List<HouseBase<CellSolver>> columns, List<HouseBase<CellSolver>> boxes) {
+    GridSolver(List<HouseSolver> rows, List<HouseSolver> columns, List<HouseSolver> boxes) {
         super(rows, columns, boxes);
     }
 }
