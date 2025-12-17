@@ -12,7 +12,7 @@ public class TestHouse extends HouseBase<TestCell> {
         super(cells);
     }
 
-    static TestHouse createTestHouse(Set<Integer> n) {
+    public static TestHouse createTestHouse(Set<Integer> n) {
         TestCell[] cells = new TestCell[9];
         for (int i = 0; i < 9; i++) {
             if(n.contains(i+1)) {

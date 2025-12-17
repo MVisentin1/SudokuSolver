@@ -10,11 +10,10 @@ public abstract class GridBase<C extends CellBase<?>> {
     private final List<HouseBase<C>> columns;
     private final List<HouseBase<C>> boxes;
 
-    GridBase(HouseBase<C>[] rows, HouseBase<C>[] columns, HouseBase<C>[] boxes) {
-        assert (rows.length == 9 && columns.length == 9 && boxes.length == 9) : "rows, columns and boxes must have 9 cells each";
-        this.rows = List.of(rows);
-        this.columns = List.of(columns);
-        this.boxes = List.of(boxes);
+    GridBase(List<HouseBase<C>> rows, List<HouseBase<C>> columns, List<HouseBase<C>> boxes) {
+        this.rows = List.copyOf(rows);
+        this.columns = List.copyOf(columns);
+        this.boxes = List.copyOf(boxes);
     }
 
     public HouseBase<C> getRow(int i) {
