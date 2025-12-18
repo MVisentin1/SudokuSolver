@@ -1,6 +1,8 @@
 package com.visentin.sudoku.model.cell;
 
-public class TestCell extends BaseCell<TestCandidate> {
+import com.visentin.sudoku.model.grid.house.TestHouse;
+
+public class TestCell extends BaseCell<TestCell, TestCandidate, TestHouse> {
     private TestCandidate[] candidates = new TestCandidate[9];
 
     TestCell(TestCandidate[] candidates, int value) {

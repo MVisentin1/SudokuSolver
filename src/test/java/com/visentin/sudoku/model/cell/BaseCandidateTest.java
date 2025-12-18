@@ -29,7 +29,6 @@ class BaseCandidateTest {
         TestCell cell = createTestCell(false);
 
         c.attachCell(cell);
-        assertTrue(c.isInitialized());
     }
 
     @Test
@@ -54,8 +53,6 @@ class BaseCandidateTest {
         TestCandidate cf = new TestCandidate(1, false);
         assertEquals(1, ct.getNumber());
         assertEquals(1, cf.getNumber());
-        assertFalse(ct.isInitialized());
-        assertFalse(cf.isInitialized());
         assertTrue(ct.isEliminated());
         assertFalse(cf.isEliminated());
     }

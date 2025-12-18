@@ -1,5 +1,6 @@
 package com.visentin.sudoku.model.grid;
 
+import com.visentin.sudoku.model.cell.TestCell;
 import com.visentin.sudoku.model.grid.house.TestHouse;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.List;
 
 import static com.visentin.sudoku.model.grid.house.TestHouse.createTestHouse;
 
-public class TestGrid extends BaseGrid<TestHouse> {
+public class TestGrid extends BaseGrid<TestCell, TestHouse> {
 
     TestGrid(List<TestHouse> rows, List<TestHouse> columns, List<TestHouse> boxes) {
         super(rows, columns, boxes);

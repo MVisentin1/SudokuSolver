@@ -1,6 +1,8 @@
 package com.visentin.sudoku.model.cell;
 
-public class SolverCell extends BaseCell<SolverCandidate> {
+import com.visentin.sudoku.model.grid.house.SolverHouse;
+
+public class SolverCell extends BaseCell<SolverCell, SolverCandidate, SolverHouse> {
 
     // -------------------- constructor -----------------------------
     public SolverCell(SolverCandidate[] candidates, int value) {

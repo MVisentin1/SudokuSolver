@@ -4,7 +4,7 @@ import com.visentin.sudoku.util.enums.SolverCandidateHighlightMode;
 import com.visentin.sudoku.util.enums.UserCandidateHighlightMode;
 import javafx.beans.property.*;
 
-public class UserCandidate extends BaseCandidate<UserCell> {
+public class UserCandidate extends BaseCandidate<UserCell, UserCandidate> {
 
     private final BooleanProperty eliminated = new SimpleBooleanProperty();
     private final ObjectProperty<SolverCandidateHighlightMode> solverHighlightMode

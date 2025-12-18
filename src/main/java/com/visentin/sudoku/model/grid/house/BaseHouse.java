@@ -6,20 +6,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public abstract class BaseHouse<C extends BaseCell<?>> {
-    private final List<C> cells;
-    BaseHouse(C[] cells) {
+public abstract class BaseHouse<
+        T extends BaseCell<T, ?, H>,
+        H extends BaseHouse<T, H>> {
+    private final List<T> cells;
+    BaseHouse(T[] cells) {
         assert cells.length == 9 : "cells must have 9 cells";
         this.cells = List.of(cells);
     }
 
-    public C getCell(int i) {
+    public T getCell(int i) {
         if(i < 1 || i > 9){
             throw new IndexOutOfBoundsException("index must be 1 to 9");
         }
         return cells.get(i-1);
     }
-    public List<C> getCells() {
+    public List<T> getCells() {
         return this.cells;
     }
     public Set<Integer> getSolvedNumbers() {

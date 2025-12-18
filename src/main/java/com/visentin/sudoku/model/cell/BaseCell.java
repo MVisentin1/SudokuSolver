@@ -1,11 +1,19 @@
 package com.visentin.sudoku.model.cell;
 
+import com.visentin.sudoku.model.grid.house.BaseHouse;
+
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BaseCell<C extends BaseCandidate<?>> {
+public abstract class BaseCell<
+        T extends BaseCell<T, C, H>,
+        C extends BaseCandidate<T, C>,
+        H extends BaseHouse<T, H>> {
     private int value;
     private final List<C> candidates;
+    private H row = null;
+    private H column = null;
+    private H box = null;
 
     // ------------ constructor -------------------------------
     BaseCell(C[] candidates, int value) {
@@ -15,10 +23,35 @@ public abstract class BaseCell<C extends BaseCandidate<?>> {
         this.candidates = List.of(candidates);
     }
 
+    public void attachRow(H row) {
+        assert this.row == null : "Row already attached";
+        this.row = row;
+    }
+
+    public void attachColumn(H column) {
+        assert this.column == null : "Column already attached";
+        this.column = column;
+    }
+
+    public void attachBox(H box) {
+        assert this.box == null : "Box already attached";
+        this.box = box;
+    }
+
     // ------------  getters setters ----------------------------
     public int getValue() {
         return this.value;
     }
+    public H getRow() {
+        return row;
+    }
+    public H getColumn() {
+        return column;
+    }
+    public H getBox() {
+        return box;
+    }
+
 
 
     // ------------ solved status -------------------------------
@@ -63,5 +96,4 @@ public abstract class BaseCell<C extends BaseCandidate<?>> {
             throw new IllegalArgumentException("invalid value");
         }
     }
-
 }

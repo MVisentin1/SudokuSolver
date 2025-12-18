@@ -1,10 +1,12 @@
 package com.visentin.sudoku.model.cell;
 
-public abstract class BaseCandidate<C extends BaseCell<?>> {
+
+public abstract class BaseCandidate<
+        T extends BaseCell<T, C, ?>,
+        C extends BaseCandidate<T, C>> {
     private final int number;
-    private C cell;
+    private T cell = null;
     private boolean eliminated;
-    private boolean initialized = false;
 
     // Constructor
     BaseCandidate(int number, boolean eliminated) {
@@ -16,27 +18,22 @@ public abstract class BaseCandidate<C extends BaseCell<?>> {
     }
 
     // Method for 2-step initialization
-    void attachCell(C cell) {
-        assert !this.initialized : "Candidate already initialized";
+    void attachCell(T cell) {
+        assert this.cell == null : "Cell already attached";
         assert cell != null : "Cell must not be null";
 
         this.cell = cell;
-        this.initialized = true;
     }
 
     // ----------- field getters  ---------------------
     public int getNumber() {
         return number;
     }
-    public C getCell() {
+    public T getCell() {
         return cell;
     }
     public boolean isEliminated() {
         return eliminated;
-    }
-
-    public boolean isInitialized() {
-        return initialized;
     }
 
     // ---------- field setters -----------------------

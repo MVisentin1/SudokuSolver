@@ -5,7 +5,7 @@ import com.visentin.sudoku.model.cell.TestCell;
 import java.util.Set;
 
 
-public class TestHouse extends BaseHouse<TestCell> {
+public class TestHouse extends BaseHouse<TestCell, TestHouse> {
     TestHouse(TestCell[] cells) {
         super(cells);
     }

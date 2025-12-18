@@ -1,10 +1,11 @@
 package com.visentin.sudoku.model.cell;
 
+import com.visentin.sudoku.model.grid.house.UserHouse;
 import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
 import com.visentin.sudoku.util.enums.UserCellHighlightMode;
 import javafx.beans.property.*;
 
-public class UserCell extends BaseCell<UserCandidate> {
+public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
     private final IntegerProperty value = new SimpleIntegerProperty();
     private final ObjectProperty<SolverCellHighlightMode> solverHighlightMode
             = new SimpleObjectProperty<>(SolverCellHighlightMode.NONE);
