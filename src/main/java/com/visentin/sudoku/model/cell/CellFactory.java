@@ -13,13 +13,14 @@ public class CellFactory<
 
     @FunctionalInterface
     public interface CellConstructor<T, C> {
-        T create(List<C> candidates, int value);
+        T create(List<C> candidates, int value, boolean fixed);
     }
 
     @FunctionalInterface
     public interface CandidateConstructor<C> {
         C create(int number, boolean eliminated);
     }
+
     private final CellConstructor<T, C> cellConstructor;
     private final CandidateConstructor<C> candidateConstructor;
 
@@ -33,20 +34,21 @@ public class CellFactory<
         boolean[] eliminatedCandidates = new boolean[10];
         Arrays.fill(eliminatedCandidates, true);
         eliminatedCandidates[value] = false;
-        return createCell(eliminatedCandidates, value);
+        return createCell(eliminatedCandidates, value, true);
     }
 
     public T createUnsolvedCell(boolean[] eliminatedCandidates) {
         assert eliminatedCandidates != null : "eliminatedCandidates cannot be null";
         assert eliminatedCandidates.length == 10 : "invalid eliminatedCandidates array size";
-        return createCell(eliminatedCandidates, 0);
+        return createCell(eliminatedCandidates, 0, false);
     }
-    private T createCell(boolean[] eliminatedCandidates, int value) {
+
+    private T createCell(boolean[] eliminatedCandidates, int value, boolean fixed) {
         ArrayList<C> candidates = new ArrayList<>();
         for (int i = 1; i <= 9; i++) {
             candidates.add(candidateConstructor.create(i, eliminatedCandidates[i]));
         }
-        T cell = cellConstructor.create(candidates, value);
+        T cell = cellConstructor.create(candidates, value, fixed);
         for (C candidate : candidates) {
             candidate.attachCell(cell);
         }

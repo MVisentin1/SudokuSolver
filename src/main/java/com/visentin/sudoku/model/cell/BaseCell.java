@@ -10,15 +10,17 @@ public abstract class BaseCell<
         C extends BaseCandidate<T, C>,
         H extends BaseHouse<T, H>> {
     private int value;
+    private final boolean fixed;
     private final List<C> candidates;
     private H row = null, column = null, box = null;
 
     // ------------ constructor -------------------------------
-    BaseCell(List<C> candidates, int value) {
+    BaseCell(List<C> candidates, int value, boolean fixed) {
         assert candidates != null : "candidates cannot be null";
         assert candidates.size() == 9 : "candidates array must have 9 candidates";
         assert value >= 0 && value <= 9 : "value must be between 0 and 9";
         this.value = value;
+        this.fixed = fixed;
         this.candidates = List.copyOf(candidates);
     }
 
@@ -53,6 +55,9 @@ public abstract class BaseCell<
         assert box != null : "Box not attached";
         return box;
     }
+    public boolean isFixed() {
+        return fixed;
+    }
 
 
 
@@ -66,13 +71,13 @@ public abstract class BaseCell<
         this.value = value;
     }
     public void unsolve() {
+        assert !fixed : "Cannot unsolve fixed cell";
         assert this.value != 0 : "already unsolved";
         this.value = 0;
     }
 
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
-        assert !isSolved() : "Cannot find candidates of solved cell";
         assert i >= 1 && i <= 9 : "invalid candidate index";
         C candidate = this.candidates.get(i-1);
         if (candidate.isEliminated()){

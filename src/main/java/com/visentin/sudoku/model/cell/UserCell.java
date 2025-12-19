@@ -15,8 +15,8 @@ public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
             = new SimpleObjectProperty<>(UserCellHighlightMode.NONE);
 
     // ---------------- constructor ---------------------------
-    public UserCell(List<UserCandidate> candidates, int value) {
-        super(candidates, value);
+    public UserCell(List<UserCandidate> candidates, int value, boolean fixed) {
+        super(candidates, value, fixed);
         this.value.set(value);
     }
 
