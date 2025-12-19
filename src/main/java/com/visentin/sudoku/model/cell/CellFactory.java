@@ -29,6 +29,7 @@ public class CellFactory<
     }
 
     public T createSolvedCell(int value) {
+        assert value >= 1 && value <= 9 : "invalid value";
         boolean[] eliminatedCandidates = new boolean[10];
         Arrays.fill(eliminatedCandidates, true);
         eliminatedCandidates[value] = false;
@@ -36,10 +37,11 @@ public class CellFactory<
     }
 
     public T createUnsolvedCell(boolean[] eliminatedCandidates) {
+        assert eliminatedCandidates != null : "eliminatedCandidates cannot be null";
+        assert eliminatedCandidates.length == 10 : "invalid eliminatedCandidates array size";
         return createCell(eliminatedCandidates, 0);
     }
     private T createCell(boolean[] eliminatedCandidates, int value) {
-        assert eliminatedCandidates.length == 10 : "eliminatedCandidates must have 9 elements";
         ArrayList<C> candidates = new ArrayList<>();
         for (int i = 1; i <= 9; i++) {
             candidates.add(candidateConstructor.create(i, eliminatedCandidates[i]));
