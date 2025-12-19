@@ -5,6 +5,7 @@ import com.visentin.sudoku.model.grid.house.BaseHouse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class CellFactory<
         T extends BaseCell<T, C, H>,
@@ -30,7 +31,9 @@ public class CellFactory<
     }
 
     public T createSolvedCell(int value) {
-        assert value >= 1 && value <= 9 : "invalid value";
+        if (value < 1 || value > 9) {
+            throw new IllegalArgumentException("invalid value");
+        }
         boolean[] eliminatedCandidates = new boolean[10];
         Arrays.fill(eliminatedCandidates, true);
         eliminatedCandidates[value] = false;
@@ -38,13 +41,18 @@ public class CellFactory<
     }
 
     public T createUnsolvedCell(boolean[] eliminatedCandidates) {
-        assert eliminatedCandidates != null : "eliminatedCandidates cannot be null";
-        assert eliminatedCandidates.length == 10 : "invalid eliminatedCandidates array size";
+        Objects.requireNonNull(eliminatedCandidates, "eliminatedCandidates cannot be null");
+        if (eliminatedCandidates.length != 10) {
+            throw new IllegalArgumentException("eliminatedCandidates must have 10 elements");
+        }
         return createCell(eliminatedCandidates, 0, false);
     }
 
     private T createCell(boolean[] eliminatedCandidates, int value, boolean fixed) {
-        ArrayList<C> candidates = new ArrayList<>();
+        assert value >= 0 && value <= 9 : "invalid value";
+        assert eliminatedCandidates != null : "eliminatedCandidates cannot be null";
+        assert eliminatedCandidates.length == 10 : "invalid eliminatedCandidates array size";
+        ArrayList<C> candidates = new ArrayList<>(9);
         for (int i = 1; i <= 9; i++) {
             candidates.add(candidateConstructor.create(i, eliminatedCandidates[i]));
         }
