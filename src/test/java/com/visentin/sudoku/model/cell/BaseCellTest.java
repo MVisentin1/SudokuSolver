@@ -90,6 +90,86 @@ class BaseCellTest {
         }
     }
 
+    @Nested
+    @DisplayName("Value Management")
+    class ValueManagement {
+
+        @Test
+        @DisplayName("Should throw on invalid value")
+        void shouldThrowOnInvalidValue(){
+            TestCell cell = cellFactory.createSolvedCell(1);
+            assertThrows(IllegalArgumentException.class, () -> cell.solve(11));
+        }
+
+        @Test
+        @DisplayName("Should throw on invalid value")
+        void shouldThrowOnInvalidValue2(){
+            TestCell cell = cellFactory.createSolvedCell(1);
+            assertThrows(IllegalArgumentException.class, () -> cell.solve(0),
+                    "Should fail to prevent using solve to unsolve");
+        }
+
+        @Test
+        @DisplayName("Should solve cell with valid value")
+        void shouldSolveCell(){
+            TestCell cell = cellFactory.createUnsolvedCell(new boolean[10]);
+            cell.solve(2);
+            assertEquals(2, cell.getValue());
+        }
+    }
+
+    @Nested
+    @DisplayName("Solve State Management")
+    class SolveStateManagement {
+
+        @Test
+        @DisplayName("Should throw on unsolved value access")
+        void shouldThrowOnUnsolvedValueAccess(){
+            TestCell cell = cellFactory.createUnsolvedCell(new boolean[10]);
+            assertThrows(IllegalStateException.class, cell::getValue,
+                    "Should fail to prevent accessing value of unsolved cell");
+        }
+
+        @Test
+        @DisplayName("Should unsolve cell correctly")
+        void shouldUnsolveCell(){
+            TestCell cell = new TestCell(cellFactory.getCandidateList(new boolean[10]), 1, false);
+            cell.unsolve();
+            assertFalse(cell.isSolved());
+        }
+        @Test
+        @DisplayName("Should throw when unsolving unsolved cell")
+        void shouldThrowOnUnsolvingUnsolvedCell(){
+            TestCell cell = new TestCell(cellFactory.getCandidateList(new boolean[10]), 1, false);
+            cell.unsolve();
+            assertThrows(IllegalStateException.class, cell::unsolve,
+                    "Should fail to prevent unsolving unsolved cell");
+        }
+
+        @Test
+        @DisplayName("Should solve cell correctly")
+        void shouldSolveCell(){
+            TestCell cell = cellFactory.createUnsolvedCell(new boolean[10]);
+            cell.solve(1);
+            assertTrue(cell.isSolved());
+        }
+
+        @Test
+        @DisplayName("Should throw when solving solved cell")
+        void shouldThrowOnSolvingSolvedCell(){
+            TestCell cell = cellFactory.createSolvedCell(1);
+            assertThrows(IllegalStateException.class, () -> cell.solve(1),
+                    "Should fail to prevent changing value of solved cell");
+        }
+
+        @Test
+        @DisplayName("Should throw on invalid solve value")
+        void shouldThrowOnInvalidSolveValue(){
+            TestCell cell = cellFactory.createUnsolvedCell(new boolean[10]);
+            assertThrows(IllegalArgumentException.class, () -> cell.solve(11));
+        }
+    }
+
 
 
 

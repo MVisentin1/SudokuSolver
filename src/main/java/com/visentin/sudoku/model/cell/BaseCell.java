@@ -50,7 +50,9 @@ public abstract class BaseCell<
 
     // ------------  getters  ------------------------------------
     public int getValue() {
-        assert isSolved() : "Cannot get value of unsolved cell";
+        if (!isSolved()) {
+            throw new IllegalStateException("Cannot get value of unsolved cell");
+        }
         return this.value;
     }
     public H getRow() {
