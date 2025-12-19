@@ -11,44 +11,46 @@ public abstract class BaseCell<
         H extends BaseHouse<T, H>> {
     private int value;
     private final List<C> candidates;
-    private H row = null;
-    private H column = null;
-    private H box = null;
+    private H row = null, column = null, box = null;
 
     // ------------ constructor -------------------------------
-    BaseCell(C[] candidates, int value) {
-        assert candidates.length == 9 : "candidates must have 9 candidates";
+    BaseCell(List<C> candidates, int value) {
+        assert candidates != null : "candidates cannot be null";
+        assert candidates.size() == 9 : "candidates array must have 9 candidates";
         assert value >= 0 && value <= 9 : "value must be between 0 and 9";
         this.value = value;
-        this.candidates = List.of(candidates);
+        this.candidates = List.copyOf(candidates);
     }
 
-    public void attachRow(H row) {
+    // ------------ attach methods ----------------------------
+    void attachRow(H row) {
         assert this.row == null : "Row already attached";
         this.row = row;
     }
-
-    public void attachColumn(H column) {
+    void attachColumn(H column) {
         assert this.column == null : "Column already attached";
         this.column = column;
     }
-
-    public void attachBox(H box) {
+    void attachBox(H box) {
         assert this.box == null : "Box already attached";
         this.box = box;
     }
 
-    // ------------  getters setters ----------------------------
+    // ------------  getters  ------------------------------------
     public int getValue() {
+        assert !isSolved() : "Cannot get value of solved cell";
         return this.value;
     }
     public H getRow() {
+        assert row != null : "Row not attached";
         return row;
     }
     public H getColumn() {
+        assert column != null : "Column not attached";
         return column;
     }
     public H getBox() {
+        assert box != null : "Box not attached";
         return box;
     }
 
@@ -59,7 +61,7 @@ public abstract class BaseCell<
         return this.value != 0;
     }
     public void solve(int value) {
-        valueValidation(value);
+        assert value >= 1 && value <= 9 : "invalid value";
         assert this.value == 0 : "already set at value : " + this.value;
         this.value = value;
     }
@@ -70,30 +72,21 @@ public abstract class BaseCell<
 
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
+        assert !isSolved() : "Cannot find candidates of solved cell";
+        assert i >= 1 && i <= 9 : "invalid candidate index";
         C candidate = this.candidates.get(i-1);
-        if (isSolved() || candidate.isEliminated()){
+        if (candidate.isEliminated()){
             return Optional.empty();
         }
         return Optional.of(candidate);
     }
     public void addCandidate(int i) {
-        if (isSolved()) {
-            throw new IllegalStateException("Cannot add candidates to solved cell");
-        }
+        assert !isSolved() : "Cannot add candidates to solved cell";
         assert this.candidates.get(i-1).isEliminated() : "candidate already eliminated";
         this.candidates.get(i-1).setEliminated(false);
     }
     public void removeCandidate(int i){
-        if (isSolved()) {
-            throw new IllegalStateException("Cannot remove candidates to solved cell");
-        }
+        assert !isSolved() : "Cannot remove candidates from solved cell";
         this.candidates.get(i-1).setEliminated(true);
-    }
-
-    // ------------ private helpers -----------------------------
-    private void valueValidation(int i) {
-        if (i < 1 || i > 9) {
-            throw new IllegalArgumentException("invalid value");
-        }
     }
 }

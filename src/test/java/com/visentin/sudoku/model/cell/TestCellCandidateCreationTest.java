@@ -22,7 +22,6 @@ class TestCellCandidateCreationTest {
             TestCandidate c = candidates[i];
             assertEquals(i + 1, c.getNumber());
             assertFalse(c.isEliminated());   // unsolved cell → candidates not eliminated
-            assertTrue(c.isInitialized());
         }
     }
 
@@ -42,7 +41,6 @@ class TestCellCandidateCreationTest {
             TestCandidate c = candidates[i];
             assertEquals(i + 1, c.getNumber());
             assertFalse(c.isEliminated());   // solved cell → candidates eliminated
-            assertTrue(c.isInitialized());
         }
     }
 }

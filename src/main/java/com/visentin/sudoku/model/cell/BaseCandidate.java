@@ -10,9 +10,7 @@ public abstract class BaseCandidate<
 
     // Constructor
     BaseCandidate(int number, boolean eliminated) {
-        if (number < 1 || number > 9) {
-            throw new IllegalArgumentException("number must be between 1 and 9");
-        }
+        assert number >= 1 && number <= 9 : "Number must be between 1 and 9";
         this.number = number;
         this.eliminated = eliminated;
     }
@@ -20,8 +18,7 @@ public abstract class BaseCandidate<
     // Method for 2-step initialization
     void attachCell(T cell) {
         assert this.cell == null : "Cell already attached";
-        assert cell != null : "Cell must not be null";
-
+        assert cell != null : "Can't attach null cell";
         this.cell = cell;
     }
 
@@ -30,6 +27,7 @@ public abstract class BaseCandidate<
         return number;
     }
     public T getCell() {
+        assert cell != null : "Cell not attached";
         return cell;
     }
     public boolean isEliminated() {

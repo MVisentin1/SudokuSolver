@@ -5,6 +5,8 @@ import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
 import com.visentin.sudoku.util.enums.UserCellHighlightMode;
 import javafx.beans.property.*;
 
+import java.util.List;
+
 public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
     private final IntegerProperty value = new SimpleIntegerProperty();
     private final ObjectProperty<SolverCellHighlightMode> solverHighlightMode
@@ -13,12 +15,9 @@ public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
             = new SimpleObjectProperty<>(UserCellHighlightMode.NONE);
 
     // ---------------- constructor ---------------------------
-    public UserCell(UserCandidate[] candidates, int value) {
+    public UserCell(List<UserCandidate> candidates, int value) {
         super(candidates, value);
         this.value.set(value);
-        for (UserCandidate candidate : candidates) {
-            candidate.attachCell(this);
-        }
     }
 
     // ---------------- properties -----------------------------

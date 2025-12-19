@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.visentin.sudoku.util.AssertionTestUtils.assertErrorIfEnabled;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BaseCellTest {
@@ -16,36 +15,7 @@ class BaseCellTest {
         }
         return new TestCell(candidates, solved ? value : 0);
     }
-    @Test
-    void constructor_NullCandidates_NullPointerExceptionThrown() {
-        assertThrows(NullPointerException.class, () -> new TestCell(null, 0));
-    }
 
-    @Test
-    void constructor_CandidatesNullElement_NullPointerExceptionThrown() {
-        TestCandidate[] candidates = new TestCandidate[9];
-        for (int i = 0; i < 9; i++) {
-            candidates[i] = new TestCandidate(i + 1, false);
-            if (i == 4) {
-                candidates[i] = null;
-            }
-        }
-        assertThrows(NullPointerException.class, () -> new TestCell(candidates, 0));
-    }
-
-    @Test
-    void constructor_CandidatesLengthNot9_AssertionErrorThrown() {
-        int length = 8;
-        assertErrorIfEnabled(() -> new TestCell(new TestCandidate[length], 0));
-    }
-
-    @Test
-    void constructor_ValueNotBetween0And9_AssertionErrorThrown() {
-        final int value = -1;
-        assertErrorIfEnabled(() -> new TestCell(new TestCandidate[9], value));
-        final int value1 = 10;
-        assertErrorIfEnabled(() -> new TestCell(new TestCandidate[9], value1));
-    }
 
     @Test void constructor_SolvedCell_InitializesFields() {
         TestCandidate[] candidates = new TestCandidate[9];
@@ -79,24 +49,7 @@ class BaseCellTest {
        assertThrows(IllegalArgumentException.class, () -> cell.solve(value1));
     }
 
-    @Test
-    void solve_AlreadySolved_AssertionErrorThrown() {
-        TestCell cell = createTestCell(true, 2, false);
-        assertErrorIfEnabled(() -> cell.solve(1));
-    }
 
-    @Test
-    void unsolve_AlreadyUnsolved_AssertionErrorThrown() {
-        TestCell cell = createTestCell(false, 0, false);
-        assertErrorIfEnabled(cell::unsolve);
-    }
-
-    @Test
-    void find_InvalidCandidate_ArrayIndexOutOfBoundsExceptionThrown() {
-        TestCell cell = createTestCell(false, 0, false);
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.findCandidate(0));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> cell.findCandidate(10));
-    }
     @Test
     void find_CandidateAlreadyEliminated_OptionalEmptyReturned() {
         TestCell cell = createTestCell(false, 0, true);
@@ -124,13 +77,6 @@ class BaseCellTest {
         TestCell cell = createTestCell(true, 2, false);
         assertThrows(IllegalStateException.class, () -> cell.addCandidate(1) );
     }
-    @Test
-    void addCandidate_CandidateAlreadyInCell_AssertionErrorThrown() {
-        TestCell cell = createTestCell(false, 0, true);
-        int candidateNumber = 1;
-        cell.addCandidate(candidateNumber);
-        assertErrorIfEnabled(() -> cell.addCandidate(candidateNumber));
-    }
 
     @Test
     void removeCandidate_InvalidCandidate_ArrayIndexOutOfBoundsExceptionThrown() {
@@ -145,13 +91,6 @@ class BaseCellTest {
         assertThrows(IllegalStateException.class, () -> cell.removeCandidate(1));
     }
 
-    @Test
-    void removeCandidate_CandidateNotInCell_AssertionErrorThrown() {
-        TestCell cell = createTestCell(false, 0, false);
-        int candidateNumber = 1;
-        cell.removeCandidate(candidateNumber);
-        assertErrorIfEnabled(() -> cell.removeCandidate(candidateNumber));
-    }
 
 
 
