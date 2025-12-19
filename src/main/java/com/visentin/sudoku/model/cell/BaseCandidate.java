@@ -1,6 +1,8 @@
 package com.visentin.sudoku.model.cell;
 
 
+import java.util.Objects;
+
 public abstract class BaseCandidate<
         T extends BaseCell<T, C, ?>,
         C extends BaseCandidate<T, C>> {
@@ -17,8 +19,10 @@ public abstract class BaseCandidate<
 
     // Method for 2-step initialization
     void attachCell(T cell) {
-        assert this.cell == null : "Cell already attached";
-        assert cell != null : "Can't attach null cell";
+        Objects.requireNonNull(cell, "cell cannot be null");
+        if (this.cell != null) {
+            throw new IllegalStateException("Cell already attached");
+        }
         this.cell = cell;
     }
 
