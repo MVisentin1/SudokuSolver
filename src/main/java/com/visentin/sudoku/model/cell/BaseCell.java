@@ -68,6 +68,9 @@ public abstract class BaseCell<
     public boolean isFixed() {
         return fixed;
     }
+    List<C> getCandidates() {
+        return candidates;
+    }
 
 
 

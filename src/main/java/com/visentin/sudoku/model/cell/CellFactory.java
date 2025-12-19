@@ -52,14 +52,19 @@ public class CellFactory<
         assert value >= 0 && value <= 9 : "invalid value";
         assert eliminatedCandidates != null : "eliminatedCandidates cannot be null";
         assert eliminatedCandidates.length == 10 : "invalid eliminatedCandidates array size";
-        ArrayList<C> candidates = new ArrayList<>(9);
-        for (int i = 1; i <= 9; i++) {
-            candidates.add(candidateConstructor.create(i, eliminatedCandidates[i]));
-        }
+        ArrayList<C> candidates = getCandidateList(eliminatedCandidates);
         T cell = cellConstructor.create(candidates, value, fixed);
         for (C candidate : candidates) {
             candidate.attachCell(cell);
         }
         return cell;
+    }
+
+    ArrayList<C> getCandidateList(boolean[] eliminatedCandidates) {
+        ArrayList<C> candidates = new ArrayList<>(9);
+        for (int i = 1; i <= 9; i++) {
+            candidates.add(candidateConstructor.create(i, eliminatedCandidates[i]));
+        }
+        return candidates;
     }
 }
