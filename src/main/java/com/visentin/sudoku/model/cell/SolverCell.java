@@ -7,7 +7,7 @@ import java.util.List;
 public class SolverCell extends BaseCell<SolverCell, SolverCandidate, SolverHouse> {
 
     // -------------------- constructor -----------------------------
-    public SolverCell(List<SolverCandidate> candidates, int value, boolean fixed) {
+    SolverCell(List<SolverCandidate> candidates, int value, boolean fixed) {
         super(candidates, value, fixed);
     }
 }

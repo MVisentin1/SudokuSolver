@@ -13,7 +13,7 @@ public class UserCandidate extends BaseCandidate<UserCell, UserCandidate> {
             = new SimpleObjectProperty<>(UserCandidateHighlightMode.NONE);
 
     // -------------- constructor ------------------
-    public UserCandidate(int number, boolean eliminated) {
+    UserCandidate(int number, boolean eliminated) {
         super(number, eliminated);
         this.eliminated.set(eliminated);
     }
