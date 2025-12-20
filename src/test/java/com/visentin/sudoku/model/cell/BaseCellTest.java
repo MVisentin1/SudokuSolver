@@ -1,12 +1,15 @@
 package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.model.grid.house.TestHouse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -168,6 +171,113 @@ class BaseCellTest {
             TestCell cell = cellFactory.createUnsolvedCell(new boolean[10]);
             assertThrows(IllegalArgumentException.class, () -> cell.solve(11));
         }
+    }
+
+    @Nested
+    @DisplayName("Fixed State Management")
+    class FixedStateManagement {
+        @Test
+        @DisplayName("Should throw on unsolving fixed cell")
+        void shouldThrowOnFixedValueChange(){
+            TestCell cell = new TestCell(cellFactory.getCandidateList(new boolean[10]), 1, true);
+            assertThrows(IllegalStateException.class, cell::unsolve);
+        }
+    }
+
+    @Nested
+    @DisplayName("Candidate Management")
+    class CandidateManagement {
+        private boolean[] eliminatedCandidates;
+        private boolean[] activeCandidates;
+
+        @BeforeEach
+        void setUp() {
+            eliminatedCandidates = new boolean[10];
+            activeCandidates = new boolean[10];
+            Arrays.fill(eliminatedCandidates, true);
+        }
+
+        @Test
+        @DisplayName("Should add candidate correctly")
+        void shouldAddCandidate(){
+            TestCell cell = cellFactory.createUnsolvedCell(eliminatedCandidates);
+            cell.addCandidate(1);
+            assertFalse(cell.getCandidates().getFirst().isEliminated());
+        }
+
+        @Test
+        @DisplayName("Should throw when adding candidate to solved cell")
+        void shouldThrowOnAddingCandidateToSolvedCell(){
+            TestCell cell = cellFactory.createSolvedCell(1);
+            assertThrows(IllegalStateException.class, () -> cell.addCandidate(2));
+        }
+
+        @Test
+        @DisplayName("Should throw when adding invalid candidate")
+        void shouldThrowOnAddingInvalidCandidate(){
+            TestCell cell = cellFactory.createUnsolvedCell(eliminatedCandidates);
+            assertThrows(IllegalArgumentException.class, () -> cell.addCandidate(11));
+        }
+
+        @Test
+        @DisplayName("Should preserve active status when adding active candidate")
+        void shouldPreserveActiveStatus(){
+            TestCell cell = cellFactory.createUnsolvedCell(activeCandidates);
+            cell.addCandidate(1);
+            assertFalse(cell.getCandidates().getFirst().isEliminated());
+        }
+
+        @Test
+        @DisplayName("Should eliminate candidate correctly")
+        void shouldEliminateCandidate(){
+            TestCell cell = cellFactory.createUnsolvedCell(activeCandidates);
+            cell.eliminateCandidate(1);
+            assertTrue(cell.getCandidates().getFirst().isEliminated());
+        }
+
+        @Test
+        @DisplayName("Should throw when eliminating candidate from solved cell")
+        void shouldThrowOnEliminatingCandidateFromSolvedCell(){
+            TestCell cell = cellFactory.createSolvedCell(1);
+            assertThrows(IllegalStateException.class, () -> cell.eliminateCandidate(1));
+        }
+
+        @Test
+        @DisplayName("Should preserve elimination status when eliminating eliminated candidate")
+        void shouldPreserveEliminationStatus(){
+            TestCell cell = cellFactory.createUnsolvedCell(eliminatedCandidates);
+            cell.eliminateCandidate(1);
+            assertTrue(cell.getCandidates().getFirst().isEliminated());
+        }
+
+        @Test
+        @DisplayName("Should find active candidate correctly")
+        void shouldFindActive(){
+            TestCell cell = cellFactory.createUnsolvedCell(activeCandidates);
+            assertEquals(cell.getCandidates().getFirst(), cell.findCandidate(1).orElseThrow());
+        }
+
+        @Test
+        @DisplayName("Should return empty on finding eliminated candidates")
+        void shouldFindEmptyOnEliminatedCandidates(){
+            TestCell cell = cellFactory.createUnsolvedCell(eliminatedCandidates);
+            assertEquals(Optional.empty(), cell.findCandidate(1));
+        }
+
+        @Test
+        @DisplayName("Should return empty when finding in solved cell")
+        void shouldFindEmptyOnSolved(){
+            TestCell cell = cellFactory.createSolvedCell(1);
+            assertEquals(Optional.empty(), cell.findCandidate(1));
+        }
+
+        @Test
+        @DisplayName("Should throw on invalid candidate")
+        void shouldThrowOnInvalidCandidate(){
+            TestCell cell = cellFactory.createUnsolvedCell(activeCandidates);
+            assertThrows(IllegalArgumentException.class, () -> cell.findCandidate(11));
+        }
+
     }
 
 

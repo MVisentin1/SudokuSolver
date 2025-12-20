@@ -102,7 +102,7 @@ public abstract class BaseCell<
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
         if (i < 1 || i > 9){
-            throw new IndexOutOfBoundsException("index must be 1 to 9");
+            throw new IllegalArgumentException("index must be 1 to 9");
         }
         C candidate = this.candidates.get(i-1);
         if (isSolved() || candidate.isEliminated()){
@@ -115,19 +115,25 @@ public abstract class BaseCell<
             throw new IllegalStateException("Cannot add candidates to solved cell");
         }
         if (i < 1 || i > 9) {
-            throw new IndexOutOfBoundsException("index must be 1 to 9");
+            throw new IllegalArgumentException("index must be 1 to 9");
         }
-        assert this.candidates.get(i-1).isEliminated() : "candidate not eliminated";
+        C candidate = this.candidates.get(i-1);
+        if (!candidate.isEliminated()){
+            return;
+        }
         this.candidates.get(i-1).setEliminated(false);
     }
-    public void removeCandidate(int i){
+    public void eliminateCandidate(int i){
         if (isSolved()) {
-            throw new IllegalStateException("Cannot remove candidates from solved cell");
+            throw new IllegalStateException("Cannot eliminate candidates from solved cell");
         }
         if (i < 1 || i > 9) {
-            throw new IndexOutOfBoundsException("index must be 1 to 9");
+            throw new IllegalArgumentException("index must be 1 to 9");
         }
-        assert !this.candidates.get(i-1).isEliminated() : "candidate already eliminated";
-        this.candidates.get(i-1).setEliminated(true);
+        C candidate = this.candidates.get(i-1);
+        if (candidate.isEliminated()){
+            return;
+        }
+        candidate.setEliminated(true);
     }
 }
