@@ -4,7 +4,6 @@ import com.visentin.sudoku.model.grid.house.BaseHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 

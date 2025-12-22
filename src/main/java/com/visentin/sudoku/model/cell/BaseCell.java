@@ -90,7 +90,11 @@ public abstract class BaseCell<
         }
         candidateSet.clearAllBut(value);
         for (C candidate : candidateList) {
-            candidate.setEliminated(candidate.getNumber() != value);
+            if (candidate.getNumber() != value) {
+                candidate.eliminate();
+            } else {
+                candidate.setToActive();
+            }
         }
     }
 
@@ -104,7 +108,7 @@ public abstract class BaseCell<
             throw new IllegalStateException("Cannot eliminate candidates from solved cell");
         }
         candidateSet.remove(i);
-        candidateList.get(i-1).setEliminated(true);
+        candidateList.get(i-1).eliminate();
     }
 
     public static void checkDigit(int i) {

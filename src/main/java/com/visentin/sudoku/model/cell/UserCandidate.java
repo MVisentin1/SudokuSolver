@@ -30,9 +30,15 @@ public class UserCandidate extends BaseCandidate<UserCell, UserCandidate> {
     }
 
     // -------------- eliminated field property sync --------------
-    @Override public void setEliminated(boolean eliminated) {
-        super.setEliminated(eliminated);
-        this.eliminated.set(eliminated);
+
+    @Override public void eliminate() {
+        super.eliminate();
+        this.eliminated.set(true);
+    }
+
+    @Override public void setToActive() {
+        super.setToActive();
+        this.eliminated.set(false);
     }
     // -------------- mode field property sync --------------------
     public SolverCandidateHighlightMode getSolverHighlightMode() {

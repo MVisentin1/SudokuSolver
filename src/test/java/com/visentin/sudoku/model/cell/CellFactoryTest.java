@@ -1,6 +1,7 @@
 package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.model.grid.house.TestHouse;
+import com.visentin.sudoku.util.dataStructures.SudokuSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -57,7 +58,10 @@ public class CellFactoryTest {
         @Test
         @DisplayName("Should initialize an unsolved cell correctly")
         void shouldCreateCell(){
-            boolean[] firstThreeEliminated = {false, true, true, true, false, false, false, false, false, false};
+            SudokuSet firstThreeEliminated = SudokuSet.emptySet();
+            firstThreeEliminated.add(1);
+            firstThreeEliminated.add(2);
+            firstThreeEliminated.add(3);
             TestCell cell = cellFactory.createUnsolvedCell(firstThreeEliminated);
 
             assertFalse(cell.isSolved());
@@ -67,15 +71,8 @@ public class CellFactoryTest {
                 TestCandidate testCandidate = cell.getCandidateList().get(i);
                 assertEquals(i + 1, testCandidate.getNumber());
                 assertEquals(cell, testCandidate.getCell());
-                assertEquals(firstThreeEliminated[i+1], testCandidate.isEliminated());
+                assertEquals(!firstThreeEliminated.contains(i+1), testCandidate.isEliminated());
             }
-        }
-
-        @Test
-        @DisplayName("Should throw on invalid eliminated array")
-        void shouldThrowOnInvalidEliminatedArray(){
-            assertThrows(IllegalArgumentException.class, () -> cellFactory.createUnsolvedCell(new boolean[9]));
-            assertThrows(IllegalArgumentException.class, () -> cellFactory.createUnsolvedCell(new boolean[11]));
         }
     }
 
@@ -84,8 +81,8 @@ public class CellFactoryTest {
         @Test
         @DisplayName("Should create different candidates on different calls")
         void shouldCreateDifferentCandidates(){
-            TestCell cell = cellFactory.createUnsolvedCell(new boolean[10]);
-            TestCell cell2 = cellFactory.createUnsolvedCell(new boolean[10]);
+            TestCell cell = cellFactory.createUnsolvedCell(SudokuSet.emptySet());
+            TestCell cell2 = cellFactory.createUnsolvedCell(SudokuSet.emptySet());
 
             for (int i = 0; i < 9; i++) {
                 assertNotEquals(cell.getCandidateList().get(i), cell2.getCandidateList().get(i));

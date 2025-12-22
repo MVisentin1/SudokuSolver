@@ -39,8 +39,10 @@ public abstract class BaseCandidate<
     }
 
     // ---------- field setters -----------------------
-    public void setEliminated(boolean eliminated) {
-        assert this.eliminated != eliminated : "already set at eliminated : " + this.eliminated;
-        this.eliminated = eliminated;
+    public void eliminate(){
+        eliminated = true;
+    }
+    public void setToActive(){
+        eliminated = false;
     }
 }

@@ -5,10 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Null;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,21 +80,11 @@ class BaseCandidateTest {
         void shouldSetEliminated() {
             TestCandidate candidate = new TestCandidate(1, false);
 
-            candidate.setEliminated(true);
+            candidate.eliminate();
             assertTrue(candidate.isEliminated());
 
-            candidate.setEliminated(false);
+            candidate.setToActive();
             assertFalse(candidate.isEliminated());
-        }
-
-        @Test
-        @DisplayName("Should fail if setting eliminated to current value")
-        void shouldFailIfSettingSameState() {
-            TestCandidate candidate = new TestCandidate(1, true);
-
-            // It's already true, setting to true should trigger assertion
-            assertThrows(AssertionError.class, () -> candidate.setEliminated(true),
-                    "Should fail because already set to eliminated: true");
         }
     }
 }
