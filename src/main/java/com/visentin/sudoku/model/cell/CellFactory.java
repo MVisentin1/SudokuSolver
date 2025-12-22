@@ -60,6 +60,7 @@ public class CellFactory<
         return cell;
     }
 
+    // Extracted for testing purposes
     ArrayList<C> getCandidateList(boolean[] eliminatedCandidates) {
         ArrayList<C> candidates = new ArrayList<>(9);
         for (int i = 1; i <= 9; i++) {

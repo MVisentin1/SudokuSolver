@@ -17,12 +17,12 @@ public abstract class BaseHouse<
 
     public T getCell(int i) {
         if(i < 1 || i > 9){
-            throw new IndexOutOfBoundsException("index must be 1 to 9");
+            throw new IllegalArgumentException("i must be 1 to 9");
         }
         return cells.get(i-1);
     }
     public List<T> getCells() {
-        return this.cells;
+        return List.copyOf(cells);
     }
     public Set<Integer> getSolvedNumbers() {
         Set<Integer> solvedNumbers = new HashSet<>();
