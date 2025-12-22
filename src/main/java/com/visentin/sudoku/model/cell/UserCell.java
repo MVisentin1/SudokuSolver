@@ -1,11 +1,13 @@
 package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.model.grid.house.UserHouse;
+import com.visentin.sudoku.util.dataStructures.SudokuSet;
 import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
 import com.visentin.sudoku.util.enums.UserCellHighlightMode;
 import javafx.beans.property.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
     private final IntegerProperty value = new SimpleIntegerProperty();
@@ -13,11 +15,16 @@ public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
             = new SimpleObjectProperty<>(SolverCellHighlightMode.NONE);
     private final ObjectProperty<UserCellHighlightMode> userHighlightMode
             = new SimpleObjectProperty<>(UserCellHighlightMode.NONE);
+    private SudokuSet previousSet = new SudokuSet();
 
     // ---------------- constructor ---------------------------
-    UserCell(List<UserCandidate> candidates, int value, boolean fixed) {
-        super(candidates, value, fixed);
-        this.value.set(value);
+    UserCell(List<UserCandidate> candidates, SudokuSet set, boolean fixed) {
+        super(candidates, set, fixed);
+        if (fixed) {
+            this.value.set(getValue());
+        } else {
+            this.value.set(0);
+        }
     }
 
     // ---------------- properties -----------------------------
@@ -32,14 +39,27 @@ public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
     }
 
     // ---------------- value field property sync --------------
+    @Override
+    Optional<UserCandidate> findCandidate(int i) {
+        return Optional.of(candidateList.get(i-1));
+    }
+
     @Override public void solve(int value) {
+        this.previousSet = new SudokuSet(candidateSet);
         super.solve(value);
         this.value.set(value);
     }
-    @Override public void unsolve() {
-        super.unsolve();
+
+    public void unsolve() {
+        if (isFixed()) return;
+        if (previousSet == null) throw new IllegalStateException("Cannot unsolve an unsolved cell");
+        candidateSet = previousSet;
+        previousSet = null;
         this.value.set(0);
     }
+
+
+
 
     // ---------------- mode field property sync ---------------
     public SolverCellHighlightMode getSolverHighlightMode() {

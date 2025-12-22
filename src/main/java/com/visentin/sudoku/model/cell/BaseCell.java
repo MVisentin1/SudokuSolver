@@ -88,10 +88,10 @@ public abstract class BaseCell<
         if (isSolved()) {
             throw new IllegalStateException("Cannot solve an already solved cell");
         }
+        candidateSet.clearAllBut(value);
         for (C candidate : candidateList) {
             candidate.setEliminated(candidate.getNumber() != value);
         }
-        this.candidateSet.clearAllBut(value);
     }
 
     // ------------ candidates ----------------------------------
@@ -103,11 +103,8 @@ public abstract class BaseCell<
         if (isSolved()) {
             throw new IllegalStateException("Cannot eliminate candidates from solved cell");
         }
-        C candidate = this.candidateList.get(i-1);
-        if (candidate.isEliminated()){
-            return;
-        }
-        candidate.setEliminated(true);
+        candidateSet.remove(i);
+        candidateList.get(i-1).setEliminated(true);
     }
 
     public static void checkDigit(int i) {
