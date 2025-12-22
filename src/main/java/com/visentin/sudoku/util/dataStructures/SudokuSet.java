@@ -1,9 +1,11 @@
 package com.visentin.sudoku.util.dataStructures;
 
 public class SudokuSet {
+    private static final int FULL_MASK = 0x3FE; // Bits 1-9 set to 1
+
     private int mask;
 
-    public SudokuSet() {
+    private SudokuSet() {
         this.mask = 0;
     }
 
@@ -42,6 +44,10 @@ public class SudokuSet {
         return Integer.bitCount(mask);
     }
 
+    public void negate() {
+        mask = (~mask) & FULL_MASK;
+    }
+
     public void intersection(SudokuSet other){
         this.mask &= other.mask;
     }
@@ -53,6 +59,10 @@ public class SudokuSet {
     public void clearAllBut(int i){
         indexValidation(i);
         mask = (1 << i);
+    }
+
+    public static SudokuSet emptySet(){
+        return new SudokuSet();
     }
 
     public static SudokuSet intersection(SudokuSet o1, SudokuSet o2){

@@ -15,7 +15,7 @@ public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
             = new SimpleObjectProperty<>(SolverCellHighlightMode.NONE);
     private final ObjectProperty<UserCellHighlightMode> userHighlightMode
             = new SimpleObjectProperty<>(UserCellHighlightMode.NONE);
-    private SudokuSet previousSet = new SudokuSet();
+    private SudokuSet previousSet;
 
     // ---------------- constructor ---------------------------
     UserCell(List<UserCandidate> candidates, SudokuSet set, boolean fixed) {

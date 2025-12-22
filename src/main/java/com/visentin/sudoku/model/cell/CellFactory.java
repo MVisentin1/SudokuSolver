@@ -1,6 +1,7 @@
 package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.model.grid.house.BaseHouse;
+import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ public class CellFactory<
 
     @FunctionalInterface
     public interface CellConstructor<T, C> {
-        T create(List<C> candidates, int value, boolean fixed);
+        T create(List<C> candidates, SudokuSet set, boolean fixed);
     }
 
     @FunctionalInterface
@@ -31,41 +32,35 @@ public class CellFactory<
     }
 
     public T createSolvedCell(int value) {
-        if (value < 1 || value > 9) {
-            throw new IllegalArgumentException("invalid value");
-        }
-        boolean[] eliminatedCandidates = new boolean[10];
-        Arrays.fill(eliminatedCandidates, true);
-        eliminatedCandidates[value] = false;
-        return createCell(eliminatedCandidates, value, true);
+        BaseCell.checkDigit(value);
+        SudokuSet eliminatedCandidates = SudokuSet.emptySet();
+        eliminatedCandidates.add(value);
+        return createCell(eliminatedCandidates, true);
     }
 
-    public T createUnsolvedCell(boolean[] eliminatedCandidates) {
+    public T createUnsolvedCell(SudokuSet eliminatedCandidates) {
         Objects.requireNonNull(eliminatedCandidates, "eliminatedCandidates cannot be null");
-        if (eliminatedCandidates.length != 10) {
-            throw new IllegalArgumentException("eliminatedCandidates must have 10 elements");
-        }
-        return createCell(eliminatedCandidates, 0, false);
+        eliminatedCandidates.negate();
+        return createCell(eliminatedCandidates, false);
     }
 
-    private T createCell(boolean[] eliminatedCandidates, int value, boolean fixed) {
-        assert value >= 0 && value <= 9 : "invalid value";
-        assert eliminatedCandidates != null : "eliminatedCandidates cannot be null";
-        assert eliminatedCandidates.length == 10 : "invalid eliminatedCandidates array size";
-        ArrayList<C> candidates = getCandidateList(eliminatedCandidates);
-        T cell = cellConstructor.create(candidates, value, fixed);
-        for (C candidate : candidates) {
+    private T createCell(SudokuSet candidateSet, boolean fixed) {
+        assert candidateSet != null : "candidateSet cannot be null";
+        List<C> candidateList = getCandidateList(candidateSet);
+        T cell = cellConstructor.create(candidateList, candidateSet, fixed);
+        for (C candidate : candidateList) {
             candidate.attachCell(cell);
         }
         return cell;
     }
 
     // Extracted for testing purposes
-    ArrayList<C> getCandidateList(boolean[] eliminatedCandidates) {
-        ArrayList<C> candidates = new ArrayList<>(9);
+    List<C> getCandidateList(SudokuSet candidateSet) {
+        List<C> candidateList = new ArrayList<>(9);
         for (int i = 1; i <= 9; i++) {
-            candidates.add(candidateConstructor.create(i, eliminatedCandidates[i]));
+            boolean eliminated = !candidateSet.contains(i);
+            candidateList.add(candidateConstructor.create(i, eliminated));
         }
-        return candidates;
+        return candidateList;
     }
 }

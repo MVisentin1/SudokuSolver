@@ -12,7 +12,7 @@ public abstract class BaseCell<
         C extends BaseCandidate<T, C>,
         H extends BaseHouse<T, H>> {
     protected final List<C> candidateList;
-    protected SudokuSet candidateSet = new SudokuSet();
+    protected SudokuSet candidateSet = SudokuSet.emptySet();
     private final boolean fixed;
     private H row = null, column = null, box = null;
 
