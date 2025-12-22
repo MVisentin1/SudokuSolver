@@ -8,13 +8,11 @@ public abstract class BaseCandidate<
         C extends BaseCandidate<T, C>> {
     private final int number;
     private T cell = null;
-    private boolean eliminated;
 
     // Constructor
-    BaseCandidate(int number, boolean eliminated) {
+    BaseCandidate(int number) {
         assert number >= 1 && number <= 9 : "Number must be between 1 and 9";
         this.number = number;
-        this.eliminated = eliminated;
     }
 
     // Method for 2-step initialization
@@ -35,14 +33,6 @@ public abstract class BaseCandidate<
         return cell;
     }
     public boolean isEliminated() {
-        return eliminated;
-    }
-
-    // ---------- field setters -----------------------
-    public void eliminate(){
-        eliminated = true;
-    }
-    public void setToActive(){
-        eliminated = false;
+        return !cell.candidateSet.contains(number);
     }
 }

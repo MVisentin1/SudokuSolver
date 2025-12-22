@@ -18,15 +18,14 @@ class BaseCandidateTest {
         @Test
         @DisplayName("Should initialize with correct number and state")
         void shouldInitializeCorrectly() {
-            TestCandidate candidate = new TestCandidate(5, false);
+            TestCandidate candidate = new TestCandidate(5);
             assertEquals(5, candidate.getNumber());
-            assertFalse(candidate.isEliminated());
         }
 
         @Test
         @DisplayName("Should throw if getting cell before attachment")
         void shouldThrowIfCellAccessedBeforeAttachment() {
-            TestCandidate candidate = new TestCandidate(1, false);
+            TestCandidate candidate = new TestCandidate(1);
             assertThrows(AssertionError.class, candidate::getCell,
                     "Should fail because cell is still null");
         }
@@ -48,16 +47,33 @@ class BaseCandidateTest {
         @Test
         @DisplayName("Should successfully attach a cell")
         void shouldAttachCell() {
-            TestCandidate candidate = new TestCandidate(1, false);
+            TestCandidate candidate = new TestCandidate(1);
             candidate.attachCell(dummyCell);
 
-            assertEquals(dummyCell, candidate.getCell());
+            assertEquals(dummyCell, candidate.getCell(), "The attached cell should match the assigned dummyCell.");
+        }
+
+        @Test
+        @DisplayName("Should throw when attaching a cell twice")
+        void shouldThrowWhenCellAttachedTwice() {
+            TestCandidate candidate = new TestCandidate(1);
+            candidate.attachCell(dummyCell);
+
+            assertThrows(IllegalStateException.class, () -> candidate.attachCell(dummyCell));
+        }
+
+        @Test
+        @DisplayName("Should throw when passing null to attachCell")
+        void shouldThrowWhenAttachingNull() {
+            TestCandidate candidate = new TestCandidate(1);
+
+            assertThrows(NullPointerException.class, () -> candidate.attachCell(null));
         }
 
         @Test
         @DisplayName("Should throw when attaching a cell twice")
         void shouldThrowOnDoubleAttachment() {
-            TestCandidate candidate = new TestCandidate(1, false);
+            TestCandidate candidate = new TestCandidate(1);
             candidate.attachCell(dummyCell);
 
             assertThrows(IllegalStateException.class, () -> candidate.attachCell(dummyCell));
@@ -66,25 +82,8 @@ class BaseCandidateTest {
         @Test
         @DisplayName("Should throw when attaching null")
         void shouldThrowOnNullAttachment() {
-            TestCandidate candidate = new TestCandidate(1, false);
+            TestCandidate candidate = new TestCandidate(1);
             assertThrows(NullPointerException.class, () -> candidate.attachCell(null));
-        }
-    }
-
-    @Nested
-    @DisplayName("State Management")
-    class StateManagement {
-
-        @Test
-        @DisplayName("Should toggle eliminated state")
-        void shouldSetEliminated() {
-            TestCandidate candidate = new TestCandidate(1, false);
-
-            candidate.eliminate();
-            assertTrue(candidate.isEliminated());
-
-            candidate.setToActive();
-            assertFalse(candidate.isEliminated());
         }
     }
 }

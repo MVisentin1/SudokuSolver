@@ -49,6 +49,23 @@ public class CellFactoryTest {
                 assertEquals(cell, testCandidate.getCell());
             }
         }
+
+        @Test
+        @DisplayName("Should mark all other candidates as eliminated except the correct one")
+        void shouldEliminateAllExceptCorrect() {
+            int value = 5;
+            TestCell cell = cellFactory.createSolvedCell(value);
+
+            assertTrue(cell.isSolved());
+            for (int i = 0; i < 9; i++) {
+                TestCandidate testCandidate = cell.getCandidateList().get(i);
+                if (i == value - 1) {
+                    assertFalse(testCandidate.isEliminated());
+                } else {
+                    assertTrue(testCandidate.isEliminated());
+                }
+            }
+        }
     }
 
     @Nested

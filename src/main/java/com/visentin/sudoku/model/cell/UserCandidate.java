@@ -6,7 +6,6 @@ import javafx.beans.property.*;
 
 public class UserCandidate extends BaseCandidate<UserCell, UserCandidate> {
 
-    private final BooleanProperty eliminated = new SimpleBooleanProperty();
     private final ObjectProperty<SolverCandidateHighlightMode> solverHighlightMode
             = new SimpleObjectProperty<>(SolverCandidateHighlightMode.NONE);
     private final ObjectProperty<UserCandidateHighlightMode> userHighlightMode
@@ -14,14 +13,10 @@ public class UserCandidate extends BaseCandidate<UserCell, UserCandidate> {
 
     // -------------- constructor ------------------
     UserCandidate(int number, boolean eliminated) {
-        super(number, eliminated);
-        this.eliminated.set(eliminated);
+        super(number);
     }
 
     // -------------- properties getters --------------------
-    public ReadOnlyBooleanProperty getEliminatedProperty() {
-        return eliminated;
-    }
     public ReadOnlyObjectProperty<SolverCandidateHighlightMode> getSolverHighlightModeProperty() {
         return solverHighlightMode;
     }
@@ -29,17 +24,6 @@ public class UserCandidate extends BaseCandidate<UserCell, UserCandidate> {
         return userHighlightMode;
     }
 
-    // -------------- eliminated field property sync --------------
-
-    @Override public void eliminate() {
-        super.eliminate();
-        this.eliminated.set(true);
-    }
-
-    @Override public void setToActive() {
-        super.setToActive();
-        this.eliminated.set(false);
-    }
     // -------------- mode field property sync --------------------
     public SolverCandidateHighlightMode getSolverHighlightMode() {
         return solverHighlightMode.get();

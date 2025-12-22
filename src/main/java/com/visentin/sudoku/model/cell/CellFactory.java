@@ -19,7 +19,7 @@ public class CellFactory<
 
     @FunctionalInterface
     public interface CandidateConstructor<C> {
-        C create(int number, boolean eliminated);
+        C create(int number);
     }
 
     private final CellConstructor<T, C> cellConstructor;
@@ -57,8 +57,7 @@ public class CellFactory<
     List<C> getCandidateList(SudokuSet candidateSet) {
         List<C> candidateList = new ArrayList<>(9);
         for (int i = 1; i <= 9; i++) {
-            boolean eliminated = !candidateSet.contains(i);
-            candidateList.add(candidateConstructor.create(i, eliminated));
+            candidateList.add(candidateConstructor.create(i));
         }
         return candidateList;
     }

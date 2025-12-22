@@ -59,6 +59,9 @@ public class SudokuSet {
     public int cardinality(){
         return Integer.bitCount(mask);
     }
+    public int numberOfTrailingZeros(){
+        return Integer.numberOfTrailingZeros(mask & FULL_MASK);
+    }
     public void negate() {
         mask = (~mask) & FULL_MASK;
     }

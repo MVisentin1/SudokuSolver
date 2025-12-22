@@ -12,7 +12,7 @@ public abstract class BaseCell<
         C extends BaseCandidate<T, C>,
         H extends BaseHouse<T, H>> {
     protected final List<C> candidateList;
-    protected SudokuSet candidateSet = SudokuSet.emptySet();
+    protected SudokuSet candidateSet;
     private final boolean fixed;
     private H row = null, column = null, box = null;
 
@@ -53,7 +53,7 @@ public abstract class BaseCell<
         if (!isSolved()) {
             throw new IllegalStateException("Cannot get value of unsolved cell");
         }
-        return Integer.numberOfTrailingZeros(candidateSet.getMask());
+        return candidateSet.numberOfTrailingZeros();
     }
     public H getRow() {
         assert row != null : "Row not attached";
@@ -88,14 +88,8 @@ public abstract class BaseCell<
         if (isSolved()) {
             throw new IllegalStateException("Cannot solve an already solved cell");
         }
+        candidateSet.add(value);
         candidateSet.clearAllBut(value);
-        for (C candidate : candidateList) {
-            if (candidate.getNumber() != value) {
-                candidate.eliminate();
-            } else {
-                candidate.setToActive();
-            }
-        }
     }
 
     // ------------ candidates ----------------------------------
@@ -108,7 +102,6 @@ public abstract class BaseCell<
             throw new IllegalStateException("Cannot eliminate candidates from solved cell");
         }
         candidateSet.remove(i);
-        candidateList.get(i-1).eliminate();
     }
 
     public static void checkDigit(int i) {

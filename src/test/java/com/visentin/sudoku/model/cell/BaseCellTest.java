@@ -31,12 +31,9 @@ class BaseCellTest {
 
             TestCell cell = new TestCell(candidateList, set, false);
             List<TestCandidate> cellCandidateList = cell.getCandidateList();
-
-            for (int i = 0; i < 9; i++) {
-                assertEquals(candidateList.get(i), cellCandidateList.get(i),
-                        "Candidate list doesn't contain given candidates");
-                assertEquals(!set.contains(i+1), cell.findCandidate(i+1).orElseThrow().isEliminated(),
-                        "Candidate list doesn't contain given candidates");
+            for (int i = 0; i < candidateList.size(); i++) {
+                assertEquals(i+1, candidateList.get(i).getNumber());
+                assertEquals(candidateList.get(i), cellCandidateList.get(i));
             }
             assertFalse(cell.isFixed());
         }
@@ -156,6 +153,35 @@ class BaseCellTest {
         void shouldThrowOnInvalidSolveValue(){
             TestCell cell = cellFactory.createUnsolvedCell(SudokuSet.emptySet());
             assertThrows(IllegalArgumentException.class, () -> cell.solve(11));
+        }
+
+        @Test
+        @DisplayName("Should throw when solving already solved cell")
+        void shouldThrowWhenSolvingAlreadySolvedCell() {
+            TestCell cell = cellFactory.createSolvedCell(3);
+            assertThrows(IllegalStateException.class, () -> cell.solve(3),
+                    "Should fail when attempting to solve an already solved cell with the same value");
+        }
+
+        @Test
+        @DisplayName("Should solve unsolved cell with valid value")
+        void shouldSolveUnsolvedCellWithValidValue() {
+            SudokuSet eliminatedCandidates = SudokuSet.emptySet();
+            eliminatedCandidates.add(1);
+            eliminatedCandidates.add(2);
+            TestCell cell = cellFactory.createUnsolvedCell(eliminatedCandidates);
+            int value = 3;
+            cell.solve(value);
+            assertTrue(cell.isSolved(), "Cell should be solved after solving with a valid value");
+            assertEquals(value, cell.getValue(), "Value of the cell should be the solved value");
+        }
+
+        @Test
+        @DisplayName("Should throw when solving with invalid value")
+        void shouldThrowWhenSolvingWithInvalidValue() {
+            TestCell cell = cellFactory.createUnsolvedCell(SudokuSet.emptySet());
+            assertThrows(IllegalArgumentException.class, () -> cell.solve(10),
+                    "Should fail when attempting to solve with a value outside the valid range");
         }
     }
 
