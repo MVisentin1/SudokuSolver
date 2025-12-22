@@ -11,6 +11,14 @@ public class SudokuSet {
         this.mask = mask;
     }
 
+    public SudokuSet(SudokuSet other){
+        this.mask = other.mask;
+    }
+
+    public int getMask() {
+        return mask;
+    }
+
     public void add(int i){
         indexValidation(i);
         mask |= (1 << i);
@@ -30,7 +38,7 @@ public class SudokuSet {
         return mask == 0;
     }
 
-    public int size(){
+    public int cardinality(){
         return Integer.bitCount(mask);
     }
 
@@ -40,6 +48,11 @@ public class SudokuSet {
 
     public void union(SudokuSet other){
         this.mask |= other.mask;
+    }
+
+    public void clearAllBut(int i){
+        indexValidation(i);
+        mask = (1 << i);
     }
 
     public static SudokuSet intersection(SudokuSet o1, SudokuSet o2){

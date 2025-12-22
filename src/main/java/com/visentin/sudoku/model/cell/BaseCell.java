@@ -1,6 +1,7 @@
 package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.model.grid.house.BaseHouse;
+import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,19 +11,18 @@ public abstract class BaseCell<
         T extends BaseCell<T, C, H>,
         C extends BaseCandidate<T, C>,
         H extends BaseHouse<T, H>> {
-    private int value;
+    protected final List<C> candidateList;
+    protected SudokuSet candidateSet = new SudokuSet();
     private final boolean fixed;
-    private final List<C> candidates;
     private H row = null, column = null, box = null;
 
     // ------------ constructor -------------------------------
-    BaseCell(List<C> candidates, int value, boolean fixed) {
-        assert candidates != null : "candidates cannot be null";
-        assert candidates.size() == 9 : "candidates array must have 9 candidates";
-        assert value >= 0 && value <= 9 : "value must be between 0 and 9";
-        this.value = value;
+    BaseCell(List<C> candidateList, SudokuSet candidateSet, boolean fixed) {
+        assert candidateList != null : "candidates cannot be null";
+        assert candidateList.size() == 9 : "candidates array must have 9 candidates";
+        this.candidateList = List.copyOf(candidateList);
+        this.candidateSet = candidateSet;
         this.fixed = fixed;
-        this.candidates = List.copyOf(candidates);
     }
 
     // ------------ attach methods ----------------------------
@@ -53,7 +53,7 @@ public abstract class BaseCell<
         if (!isSolved()) {
             throw new IllegalStateException("Cannot get value of unsolved cell");
         }
-        return this.value;
+        return Integer.numberOfTrailingZeros(candidateSet.getMask());
     }
     public H getRow() {
         assert row != null : "Row not attached";
@@ -70,71 +70,49 @@ public abstract class BaseCell<
     public boolean isFixed() {
         return fixed;
     }
-    List<C> getCandidates() {
-        return candidates;
+    List<C> getCandidateList() {
+        return candidateList;
+    }
+    SudokuSet getCandidateSet() {
+        return new SudokuSet(candidateSet);
     }
 
 
 
     // ------------ solved status -------------------------------
     public boolean isSolved(){
-        return this.value != 0;
+        return this.candidateSet.cardinality() == 1;
     }
     public void solve(int value) {
-        if (value < 1 || value > 9) {
-            throw new IllegalArgumentException("invalid value");
+        checkDigit(value);
+        if (isSolved()) {
+            throw new IllegalStateException("Cannot solve an already solved cell");
         }
-        if (this.value != 0) {
-            throw new IllegalStateException("Cannot solve already solved cell");
+        for (C candidate : candidateList) {
+            candidate.setEliminated(candidate.getNumber() != value);
         }
-        this.value = value;
-    }
-    public void unsolve() {
-        if (fixed) {
-            throw new IllegalStateException("Cannot unsolve a fixed cell");
-        }
-        if (!isSolved()) {
-            throw new IllegalStateException("Cannot unsolve an unsolved cell");
-        }
-        this.value = 0;
+        this.candidateSet.clearAllBut(value);
     }
 
     // ------------ candidates ----------------------------------
-    public Optional<C> findCandidate(int i){
-        candidateValidation(i);
-        C candidate = this.candidates.get(i-1);
-        if (isSolved() || candidate.isEliminated()){
-            return Optional.empty();
-        }
-        return Optional.of(candidate);
-    }
 
-    public void addCandidate(int i) {
-        if (isSolved()) {
-            throw new IllegalStateException("Cannot add candidates to solved cell");
-        }
-        candidateValidation(i);
-        C candidate = this.candidates.get(i-1);
-        if (!candidate.isEliminated()){
-            return;
-        }
-        this.candidates.get(i-1).setEliminated(false);
-    }
-    public void eliminateCandidate(int i){
+    abstract Optional<C> findCandidate(int i);
+
+     void eliminateCandidate(int i){
+        checkDigit(i);
         if (isSolved()) {
             throw new IllegalStateException("Cannot eliminate candidates from solved cell");
         }
-        candidateValidation(i);
-        C candidate = this.candidates.get(i-1);
+        C candidate = this.candidateList.get(i-1);
         if (candidate.isEliminated()){
             return;
         }
         candidate.setEliminated(true);
     }
 
-    private static void candidateValidation(int i) {
-        if (i < 1 || i > 9){
-            throw new IllegalArgumentException("index must be 1 to 9");
+    public static void checkDigit(int i) {
+        if (i < 1 || i > 9) {
+            throw new IllegalArgumentException("Value must be 1-9");
         }
     }
 }

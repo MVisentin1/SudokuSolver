@@ -29,7 +29,7 @@ class BaseCellTest {
             ArrayList<TestCandidate> candidateList = cellFactory.getCandidateList(new boolean[10]);
 
             TestCell cell = new TestCell(candidateList, 1, false);
-            List<TestCandidate> cellCandidateList = cell.getCandidates();
+            List<TestCandidate> cellCandidateList = cell.getCandidateList();
 
             for (int i = 0; i < 9; i++) {
                 assertEquals(candidateList.get(i), cellCandidateList.get(i),
@@ -202,7 +202,7 @@ class BaseCellTest {
         void shouldAddCandidate(){
             TestCell cell = cellFactory.createUnsolvedCell(eliminatedCandidates);
             cell.addCandidate(1);
-            assertFalse(cell.getCandidates().getFirst().isEliminated());
+            assertFalse(cell.getCandidateList().getFirst().isEliminated());
         }
 
         @Test
@@ -224,7 +224,7 @@ class BaseCellTest {
         void shouldPreserveActiveStatus(){
             TestCell cell = cellFactory.createUnsolvedCell(activeCandidates);
             cell.addCandidate(1);
-            assertFalse(cell.getCandidates().getFirst().isEliminated());
+            assertFalse(cell.getCandidateList().getFirst().isEliminated());
         }
 
         @Test
@@ -232,7 +232,7 @@ class BaseCellTest {
         void shouldEliminateCandidate(){
             TestCell cell = cellFactory.createUnsolvedCell(activeCandidates);
             cell.eliminateCandidate(1);
-            assertTrue(cell.getCandidates().getFirst().isEliminated());
+            assertTrue(cell.getCandidateList().getFirst().isEliminated());
         }
 
         @Test
@@ -247,14 +247,14 @@ class BaseCellTest {
         void shouldPreserveEliminationStatus(){
             TestCell cell = cellFactory.createUnsolvedCell(eliminatedCandidates);
             cell.eliminateCandidate(1);
-            assertTrue(cell.getCandidates().getFirst().isEliminated());
+            assertTrue(cell.getCandidateList().getFirst().isEliminated());
         }
 
         @Test
         @DisplayName("Should find active candidate correctly")
         void shouldFindActive(){
             TestCell cell = cellFactory.createUnsolvedCell(activeCandidates);
-            assertEquals(cell.getCandidates().getFirst(), cell.findCandidate(1).orElseThrow());
+            assertEquals(cell.getCandidateList().getFirst(), cell.findCandidate(1).orElseThrow());
         }
 
         @Test

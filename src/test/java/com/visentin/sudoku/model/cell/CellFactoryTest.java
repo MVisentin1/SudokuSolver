@@ -35,10 +35,10 @@ public class CellFactoryTest {
 
             assertTrue(cell.isSolved());
             assertEquals(value, cell.getValue());
-            assertEquals(9, cell.getCandidates().size());
+            assertEquals(9, cell.getCandidateList().size());
             assertTrue(cell.isFixed());
             for (int i = 0; i < 9; i++) {
-                TestCandidate testCandidate = cell.getCandidates().get(i);
+                TestCandidate testCandidate = cell.getCandidateList().get(i);
                 if (i == value-1) {
                     assertFalse(testCandidate.isEliminated());
                 } else {
@@ -62,9 +62,9 @@ public class CellFactoryTest {
 
             assertFalse(cell.isSolved());
             assertFalse(cell.isFixed());
-            assertEquals(9, cell.getCandidates().size());
+            assertEquals(9, cell.getCandidateList().size());
             for (int i = 0; i < 9; i++) {
-                TestCandidate testCandidate = cell.getCandidates().get(i);
+                TestCandidate testCandidate = cell.getCandidateList().get(i);
                 assertEquals(i + 1, testCandidate.getNumber());
                 assertEquals(cell, testCandidate.getCell());
                 assertEquals(firstThreeEliminated[i+1], testCandidate.isEliminated());
@@ -88,7 +88,7 @@ public class CellFactoryTest {
             TestCell cell2 = cellFactory.createUnsolvedCell(new boolean[10]);
 
             for (int i = 0; i < 9; i++) {
-                assertNotEquals(cell.getCandidates().get(i), cell2.getCandidates().get(i));
+                assertNotEquals(cell.getCandidateList().get(i), cell2.getCandidateList().get(i));
             }
         }
 
