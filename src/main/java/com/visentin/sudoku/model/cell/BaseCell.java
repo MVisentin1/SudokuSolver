@@ -101,22 +101,19 @@ public abstract class BaseCell<
 
     // ------------ candidates ----------------------------------
     public Optional<C> findCandidate(int i){
-        if (i < 1 || i > 9){
-            throw new IllegalArgumentException("index must be 1 to 9");
-        }
+        candidateValidation(i);
         C candidate = this.candidates.get(i-1);
         if (isSolved() || candidate.isEliminated()){
             return Optional.empty();
         }
         return Optional.of(candidate);
     }
+
     public void addCandidate(int i) {
         if (isSolved()) {
             throw new IllegalStateException("Cannot add candidates to solved cell");
         }
-        if (i < 1 || i > 9) {
-            throw new IllegalArgumentException("index must be 1 to 9");
-        }
+        candidateValidation(i);
         C candidate = this.candidates.get(i-1);
         if (!candidate.isEliminated()){
             return;
@@ -127,13 +124,17 @@ public abstract class BaseCell<
         if (isSolved()) {
             throw new IllegalStateException("Cannot eliminate candidates from solved cell");
         }
-        if (i < 1 || i > 9) {
-            throw new IllegalArgumentException("index must be 1 to 9");
-        }
+        candidateValidation(i);
         C candidate = this.candidates.get(i-1);
         if (candidate.isEliminated()){
             return;
         }
         candidate.setEliminated(true);
+    }
+
+    private static void candidateValidation(int i) {
+        if (i < 1 || i > 9){
+            throw new IllegalArgumentException("index must be 1 to 9");
+        }
     }
 }
