@@ -9,7 +9,7 @@ import javafx.beans.property.*;
 import java.util.List;
 import java.util.Optional;
 
-public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
+public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
     private final List<UserCandidate> candidates;
     private final IntegerProperty value = new SimpleIntegerProperty();
     private final IntegerProperty setProperty = new SimpleIntegerProperty();

@@ -20,21 +20,21 @@ public abstract class BaseCell<
     }
 
     // ------------ House Initialization ----------------------
-    void attachRow(H row) {
+    final void attachRow(H row) {
         Objects.requireNonNull(row, "Row cannot be null");
         if (this.row != null) {
             throw new IllegalStateException("Row already attached");
         }
         this.row = row;
     }
-    void attachColumn(H column) {
+    final void attachColumn(H column) {
         Objects.requireNonNull(column, "Column cannot be null");
         if (this.column != null) {
             throw new IllegalStateException("Column already attached");
         }
         this.column = column;
     }
-    void attachBox(H box) {
+    final void attachBox(H box) {
         Objects.requireNonNull(box, "Box cannot be null");
         if (this.box != null) {
             throw new IllegalStateException("Box already attached");
@@ -44,15 +44,15 @@ public abstract class BaseCell<
 
     // ------------ Getters ----------------------------------
     public abstract int getValue();
-    public H getRow() {
+    public final H getRow() {
         assert row != null : "Row not attached";
         return row;
     }
-    public H getColumn() {
+    public final H getColumn() {
         assert column != null : "Column not attached";
         return column;
     }
-    public H getBox() {
+    public final H getBox() {
         assert box != null : "Box not attached";
         return box;
     }
