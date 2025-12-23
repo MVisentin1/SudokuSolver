@@ -3,7 +3,6 @@ package com.visentin.sudoku.model.cell;
 import com.visentin.sudoku.model.grid.house.BaseHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,21 +10,16 @@ public abstract class BaseCell<
         T extends BaseCell<T, C, H>,
         C extends BaseCandidate<T, C>,
         H extends BaseHouse<T, H>> {
-    protected final List<C> candidateList;
-    protected SudokuSet candidateSet;
-    private final boolean fixed;
+    protected SudokuSet set;
     private H row = null, column = null, box = null;
 
-    // ------------ constructor -------------------------------
-    BaseCell(List<C> candidateList, SudokuSet candidateSet, boolean fixed) {
-        assert candidateList != null : "candidates cannot be null";
-        assert candidateList.size() == 9 : "candidates array must have 9 candidates";
-        this.candidateList = List.copyOf(candidateList);
-        this.candidateSet = candidateSet;
-        this.fixed = fixed;
+    // ------------ Constructor -------------------------------
+    BaseCell(SudokuSet set) {
+        assert set != null : "set cannot be null";
+        this.set = set;
     }
 
-    // ------------ attach methods ----------------------------
+    // ------------ House Initialization ----------------------
     void attachRow(H row) {
         Objects.requireNonNull(row, "Row cannot be null");
         if (this.row != null) {
@@ -48,13 +42,8 @@ public abstract class BaseCell<
         this.box = box;
     }
 
-    // ------------  getters  ------------------------------------
-    public int getValue() {
-        if (!isSolved()) {
-            throw new IllegalStateException("Cannot get value of unsolved cell");
-        }
-        return candidateSet.numberOfTrailingZeros();
-    }
+    // ------------ Getters ----------------------------------
+    public abstract int getValue();
     public H getRow() {
         assert row != null : "Row not attached";
         return row;
@@ -67,43 +56,17 @@ public abstract class BaseCell<
         assert box != null : "Box not attached";
         return box;
     }
-    public boolean isFixed() {
-        return fixed;
-    }
-    List<C> getCandidateList() {
-        return candidateList;
-    }
-    SudokuSet getCandidateSet() {
-        return new SudokuSet(candidateSet);
-    }
+    public abstract boolean isSolved();
 
-
-
-    // ------------ solved status -------------------------------
-    public boolean isSolved(){
-        return this.candidateSet.cardinality() == 1;
-    }
-    public void solve(int value) {
-        checkDigit(value);
-        if (isSolved()) {
-            throw new IllegalStateException("Cannot solve an already solved cell");
-        }
-        candidateSet.add(value);
-        candidateSet.clearAllBut(value);
-    }
-
-    // ------------ candidates ----------------------------------
-
+    // ------------ Candidates ----------------------------------
     abstract Optional<C> findCandidate(int i);
-
-     void eliminateCandidate(int i){
+    public void eliminateCandidate(int i){
         checkDigit(i);
-        if (isSolved()) {
-            throw new IllegalStateException("Cannot eliminate candidates from solved cell");
-        }
-        candidateSet.remove(i);
+        if (isSolved()) throw new IllegalStateException("Cannot eliminate candidates on solved cells");
+        set.remove(i);
     }
 
+    // ------------ Helper -------------------------------------
     public static void checkDigit(int i) {
         if (i < 1 || i > 9) {
             throw new IllegalArgumentException("Value must be 1-9");

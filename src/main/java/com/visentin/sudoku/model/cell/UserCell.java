@@ -10,77 +10,69 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
+    private final List<UserCandidate> candidates;
     private final IntegerProperty value = new SimpleIntegerProperty();
-    private final ObjectProperty<SolverCellHighlightMode> solverHighlightMode
-            = new SimpleObjectProperty<>(SolverCellHighlightMode.NONE);
-    private final ObjectProperty<UserCellHighlightMode> userHighlightMode
-            = new SimpleObjectProperty<>(UserCellHighlightMode.NONE);
-    private SudokuSet previousSet;
+    private final IntegerProperty setProperty = new SimpleIntegerProperty();
+    private final boolean fixed;
 
     // ---------------- constructor ---------------------------
-    UserCell(List<UserCandidate> candidates, SudokuSet set, boolean fixed) {
-        super(candidates, set, fixed);
-        if (fixed) {
-            this.value.set(getValue());
-        } else {
-            this.value.set(0);
-        }
+    UserCell(SudokuSet set, List<UserCandidate> candidates, int value, boolean fixed) {
+        super(set);
+        assert candidates != null : "candidates cannot be null";
+        assert candidates.size() == 9 : "candidates must contain 9 candidates";
+        this.candidates = List.copyOf(candidates);
+        assert value >= 0 && value <= 9 : "value must be between 0 and 9";
+        this.value.set(value);
+        assert fixed || value != 0 : "fixed cells must have a value";
+        assert !fixed || value == 0 : "unfixed cells cannot have a value";
+        this.fixed = fixed;
     }
 
     // ---------------- properties -----------------------------
     public ReadOnlyIntegerProperty getValueProperty() {
         return value;
     }
-    public ReadOnlyObjectProperty<SolverCellHighlightMode> getSolverHighlightModeProperty() {
-        return solverHighlightMode;
-    }
-    public ReadOnlyObjectProperty<UserCellHighlightMode> getUserHighlightModeProperty() {
-        return userHighlightMode;
+    public ReadOnlyIntegerProperty getSetProperty(){ return setProperty;}
+    private void syncSetProperty() {
+        setProperty.set(set.getMask());
     }
 
-    // ---------------- value field property sync --------------
+
+    @Override
+    public int getValue() {
+        if (!isSolved()) throw new IllegalStateException("Cell is not solved");
+        return value.get();
+    }
+
+    @Override
+    public boolean isSolved() {
+        return value.get() != 0;
+    }
+
+    @Override
+    public void eliminateCandidate(int i) {
+        super.eliminateCandidate(i);
+        syncSetProperty();
+    }
+
     @Override
     Optional<UserCandidate> findCandidate(int i) {
-        return Optional.of(candidateList.get(i-1));
+        if (isSolved() || !set.contains(i)) {
+            return Optional.empty();
+        } else {
+            return Optional.of(candidates.get(i-1));
+        }
     }
 
-    @Override public void solve(int value) {
-        this.previousSet = new SudokuSet(candidateSet);
-        super.solve(value);
+    public void solve(int value) {
+        if (isSolved()) throw new IllegalStateException("Cannot solve a solved cell");
+        checkDigit(value);
         this.value.set(value);
     }
 
     public void unsolve() {
-        if (isFixed()) return;
-        if (previousSet == null) throw new IllegalStateException("Cannot unsolve an unsolved cell");
-        candidateSet = previousSet;
-        previousSet = null;
+        if (fixed) throw new IllegalStateException("Cannot unsolve a fixed cell");
+        if (!isSolved()) throw new IllegalStateException("Cannot unsolve an unsolved cell");
         this.value.set(0);
     }
-
-
-
-
-    // ---------------- mode field property sync ---------------
-    public SolverCellHighlightMode getSolverHighlightMode() {
-        return solverHighlightMode.get();
-    }
-    public void setSolverHighlightMode(SolverCellHighlightMode solverHighlightMode) {
-        if (solverHighlightMode == null) {
-            throw new NullPointerException("solverHighlightMode must not be null");
-        }
-        assert this.solverHighlightMode.get() != solverHighlightMode : "already set at mode : " + this.solverHighlightMode;
-        this.solverHighlightMode.set(solverHighlightMode);
-    }
-    public UserCellHighlightMode getUserHighlightMode() {
-        return userHighlightMode.get();
-    }
-    public void setUserHighlightMode(UserCellHighlightMode userHighlightMode) {
-        if (userHighlightMode == null) {
-            throw new NullPointerException("userHighlightMode must not be null");
-        }
-        assert this.userHighlightMode.get() != userHighlightMode : "already set at mode : " + this.userHighlightMode;
-        this.userHighlightMode.set(userHighlightMode);
-    }
-
 }

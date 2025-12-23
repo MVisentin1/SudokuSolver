@@ -15,7 +15,6 @@ public abstract class BaseCandidate<
         this.number = number;
     }
 
-    // Method for 2-step initialization
     void attachCell(T cell) {
         Objects.requireNonNull(cell, "cell cannot be null");
         if (this.cell != null) {
@@ -32,7 +31,8 @@ public abstract class BaseCandidate<
         assert cell != null : "Cell not attached";
         return cell;
     }
+
     public boolean isEliminated() {
-        return !cell.candidateSet.contains(number);
+        return cell.findCandidate(number).isEmpty();
     }
 }
