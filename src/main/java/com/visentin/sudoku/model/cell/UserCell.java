@@ -2,29 +2,24 @@ package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.model.grid.house.UserHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
-import com.visentin.sudoku.util.enums.SolverCellHighlightMode;
-import com.visentin.sudoku.util.enums.UserCellHighlightMode;
 import javafx.beans.property.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Arrays;
 
 public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
-    private final List<UserCandidate> candidates;
+    private final UserCandidate[] candidates;
     private final IntegerProperty value = new SimpleIntegerProperty();
     private final IntegerProperty setProperty = new SimpleIntegerProperty();
     private final boolean fixed;
 
     // ---------------- constructor ---------------------------
-    UserCell(SudokuSet set, List<UserCandidate> candidates, int value, boolean fixed) {
+    UserCell(SudokuSet set, UserCandidate[] candidates, int value, boolean fixed) {
         super(set);
         assert candidates != null : "candidates cannot be null";
-        assert candidates.size() == 9 : "candidates must contain 9 candidates";
-        this.candidates = List.copyOf(candidates);
+        assert candidates.length == 10 : "candidates must contain 9 candidates";
+        this.candidates = Arrays.copyOf(candidates, candidates.length);
         assert value >= 0 && value <= 9 : "value must be between 0 and 9";
         this.value.set(value);
-        assert fixed || value != 0 : "fixed cells must have a value";
-        assert !fixed || value == 0 : "unfixed cells cannot have a value";
         this.fixed = fixed;
     }
 
@@ -49,6 +44,11 @@ public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse>
         return value.get() != 0;
     }
 
+    public void addCandidate(int i) {
+        set.add(i);
+        syncSetProperty();
+    }
+
     @Override
     public void eliminateCandidate(int i) {
         super.eliminateCandidate(i);
@@ -56,12 +56,8 @@ public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse>
     }
 
     @Override
-    Optional<UserCandidate> findCandidate(int i) {
-        if (isSolved() || !set.contains(i)) {
-            return Optional.empty();
-        } else {
-            return Optional.of(candidates.get(i-1));
-        }
+    UserCandidate[] getCandidates() {
+        return Arrays.copyOf(candidates, candidates.length);
     }
 
     public void solve(int value) {

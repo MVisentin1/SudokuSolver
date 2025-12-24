@@ -41,13 +41,15 @@ public class SudokuSet {
     public int getMask() {
         return mask;
     }
-    public void add(int i){
+    public SudokuSet add(int i){
         indexValidation(i);
         mask |= (1 << i);
+        return this;
     }
-    public void remove(int i){
+    public SudokuSet remove(int i){
         indexValidation(i);
         mask &= ~(1 << i);
+        return this;
     }
     public boolean contains(int i){
         indexValidation(i);
@@ -62,8 +64,9 @@ public class SudokuSet {
     public int numberOfTrailingZeros(){
         return Integer.numberOfTrailingZeros(mask & FULL_MASK);
     }
-    public void negate() {
+    public SudokuSet negate() {
         mask = (~mask) & FULL_MASK;
+        return this;
     }
 
     public void intersection(SudokuSet other){

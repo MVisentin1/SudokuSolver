@@ -59,7 +59,16 @@ public abstract class BaseCell<
     public abstract boolean isSolved();
 
     // ------------ Candidates ----------------------------------
-    abstract Optional<C> findCandidate(int i);
+    abstract C[] getCandidates();
+    public final Optional<C> findCandidate(int i) {
+        C[] candidates = getCandidates();
+        if (set.contains(i)) {
+            assert candidates[i-1] != null : "Candidate not initialized, set is source of truth";
+            return Optional.of(candidates[i]);
+        } else {
+            return Optional.empty();
+        }
+    }
     public void eliminateCandidate(int i){
         checkDigit(i);
         if (isSolved()) throw new IllegalStateException("Cannot eliminate candidates on solved cells");

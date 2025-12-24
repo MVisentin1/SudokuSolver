@@ -6,8 +6,8 @@ import java.util.Objects;
 public abstract class BaseCandidate<
         T extends BaseCell<T, C, ?>,
         C extends BaseCandidate<T, C>> {
-    private final int number;
-    private T cell = null;
+    protected final int number;
+    protected T cell = null;
 
     // Constructor
     BaseCandidate(int number) {

@@ -3,13 +3,11 @@ package com.visentin.sudoku.model.cell;
 import com.visentin.sudoku.model.grid.house.SolverHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
-public class SolverCell extends BaseCell<SolverCell, SolverCandidate, SolverHouse> {
-    private SolverCandidate[] candidates = new SolverCandidate[10];
+public final class SolverCell extends BaseCell<SolverCell, SolverCandidate, SolverHouse> {
+    private final SolverCandidate[] candidates;
+
     // -------------------- constructor -----------------------------
     SolverCell(SudokuSet set, SolverCandidate[] candidates) {
         super(set);
@@ -30,11 +28,8 @@ public class SolverCell extends BaseCell<SolverCell, SolverCandidate, SolverHous
     }
 
     @Override
-    Optional<SolverCandidate> findCandidate(int i) {
-        if (!set.contains(i)) {
-            return Optional.empty();
-        } else {
-            return Optional.of(candidates[i]);
-        }
+    SolverCandidate[] getCandidates() {
+        return Arrays.copyOf(candidates, candidates.length);
     }
+
 }
