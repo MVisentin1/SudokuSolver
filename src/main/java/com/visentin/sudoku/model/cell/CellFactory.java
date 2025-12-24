@@ -24,21 +24,6 @@ public class CellFactory {
         return cell;
     }
 
-    public static SolverCell createSolverCellFromUserCell(UserCell userCell, SudokuSet eliminatedCandidates) {
-        SudokuSet set = userCell.isSolved() ? new SudokuSet(1 << userCell.getValue()) : eliminatedCandidates;
-        SolverCandidate[] candidates = new SolverCandidate[10];
-        for (int i = 1; i <= 9; i++) {
-            if (set.contains(i)) {
-                candidates[i] = new SolverCandidate(i);
-            }
-        }
-        SolverCell cell = new SolverCell(set, candidates);
-        for (int i = 1; i <= 9; i++) {
-            cell.candidates[i].attachCell(cell);
-        }
-        return cell;
-    }
-
     private static UserCandidate[] getUserCandidates() {
         UserCandidate[] candidates = new UserCandidate[10];
         for (int i = 1; i <= 9; i++) {
@@ -46,4 +31,5 @@ public class CellFactory {
         }
         return candidates;
     }
+
 }
