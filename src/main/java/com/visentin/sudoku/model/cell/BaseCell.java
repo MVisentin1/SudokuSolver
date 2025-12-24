@@ -61,8 +61,8 @@ public abstract class BaseCell<
     // ------------ Candidates ----------------------------------
     abstract C[] getCandidates();
     public final Optional<C> findCandidate(int i) {
-        C[] candidates = getCandidates();
         if (set.contains(i)) {
+            C[] candidates = getCandidates();
             assert candidates[i-1] != null : "Candidate not initialized, set is source of truth";
             return Optional.of(candidates[i]);
         } else {
