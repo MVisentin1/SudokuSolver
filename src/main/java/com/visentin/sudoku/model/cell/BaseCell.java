@@ -3,6 +3,7 @@ package com.visentin.sudoku.model.cell;
 import com.visentin.sudoku.model.grid.house.BaseHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,12 +12,16 @@ public abstract class BaseCell<
         C extends BaseCandidate<T, C>,
         H extends BaseHouse<T, H>> {
     protected SudokuSet set;
+    protected C[] candidates;
     private H row = null, column = null, box = null;
 
     // ------------ Constructor -------------------------------
-    BaseCell(SudokuSet set) {
+    BaseCell(SudokuSet set, C[] candidates) {
         assert set != null : "set cannot be null";
-        this.set = set;
+        this.set = new SudokuSet(set);
+        assert candidates != null : "candidates cannot be null";
+        assert candidates.length == 10 : "candidates must contain 9 candidates";
+        this.candidates = Arrays.copyOf(candidates, candidates.length);
     }
 
     // ------------ House Initialization ----------------------
@@ -59,15 +64,12 @@ public abstract class BaseCell<
     public abstract boolean isSolved();
 
     // ------------ Candidates ----------------------------------
-    abstract C[] getCandidates();
     public final Optional<C> findCandidate(int i) {
-        if (set.contains(i)) {
-            C[] candidates = getCandidates();
-            assert candidates[i-1] != null : "Candidate not initialized, set is source of truth";
-            return Optional.of(candidates[i]);
-        } else {
+        if (isSolved() || !set.contains(i)) {
             return Optional.empty();
         }
+        assert candidates[i] != null : "Candidate not initialized, set is source of truth";
+        return Optional.of(candidates[i]);
     }
     public void eliminateCandidate(int i){
         checkDigit(i);

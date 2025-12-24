@@ -5,8 +5,8 @@ import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
 
 public class TestCell extends BaseCell<TestCell, TestCandidate, TestHouse> {
-    TestCell(SudokuSet set) {
-        super(set);
+    TestCell(SudokuSet set, TestCandidate[] candidates) {
+        super(set, candidates);
     }
 
     @Override
@@ -17,14 +17,5 @@ public class TestCell extends BaseCell<TestCell, TestCandidate, TestHouse> {
     @Override
     public boolean isSolved() {
         return set.cardinality() == 1;
-    }
-
-    @Override
-    TestCandidate[] getCandidates() {
-        TestCandidate[] candidates = new TestCandidate[10];
-        for (int i = 1; i < candidates.length; i++) {
-            candidates[i] = new TestCandidate(i);
-        }
-        return candidates;
     }
 }

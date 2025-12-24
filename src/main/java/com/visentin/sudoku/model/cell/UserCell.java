@@ -7,17 +7,13 @@ import javafx.beans.property.*;
 import java.util.Arrays;
 
 public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
-    private final UserCandidate[] candidates;
     private final IntegerProperty value = new SimpleIntegerProperty();
     private final IntegerProperty setProperty = new SimpleIntegerProperty();
     private final boolean fixed;
 
     // ---------------- constructor ---------------------------
     UserCell(SudokuSet set, UserCandidate[] candidates, int value, boolean fixed) {
-        super(set);
-        assert candidates != null : "candidates cannot be null";
-        assert candidates.length == 10 : "candidates must contain 9 candidates";
-        this.candidates = Arrays.copyOf(candidates, candidates.length);
+        super(set, candidates);
         assert value >= 0 && value <= 9 : "value must be between 0 and 9";
         this.value.set(value);
         this.fixed = fixed;
@@ -32,6 +28,9 @@ public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse>
         setProperty.set(set.getMask());
     }
 
+    public boolean isFixed() {
+        return fixed;
+    }
 
     @Override
     public int getValue() {
@@ -53,11 +52,6 @@ public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse>
     public void eliminateCandidate(int i) {
         super.eliminateCandidate(i);
         syncSetProperty();
-    }
-
-    @Override
-    UserCandidate[] getCandidates() {
-        return Arrays.copyOf(candidates, candidates.length);
     }
 
     public void solve(int value) {

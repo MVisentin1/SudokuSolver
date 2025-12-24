@@ -6,14 +6,9 @@ import com.visentin.sudoku.util.dataStructures.SudokuSet;
 import java.util.Arrays;
 
 public final class SolverCell extends BaseCell<SolverCell, SolverCandidate, SolverHouse> {
-    private final SolverCandidate[] candidates;
-
     // -------------------- constructor -----------------------------
     SolverCell(SudokuSet set, SolverCandidate[] candidates) {
-        super(set);
-        assert candidates != null : "candidates cannot be null";
-        assert candidates.length == 10 : "candidates must contain 9 candidates";
-        this.candidates = Arrays.copyOf(candidates, candidates.length);
+        super(set, candidates);
     }
 
     @Override
@@ -25,11 +20,6 @@ public final class SolverCell extends BaseCell<SolverCell, SolverCandidate, Solv
     @Override
     public boolean isSolved() {
         return set.cardinality() == 1;
-    }
-
-    @Override
-    SolverCandidate[] getCandidates() {
-        return Arrays.copyOf(candidates, candidates.length);
     }
 
 }

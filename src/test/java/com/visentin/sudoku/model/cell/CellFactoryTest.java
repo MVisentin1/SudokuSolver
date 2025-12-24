@@ -10,61 +10,35 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CellFactoryTest {
-    private CellFactory<TestCell, TestCandidate, TestHouse> cellFactory;
-
-    @BeforeEach
-    void setUp() {
-        cellFactory = new CellFactory<>(TestCell::new, TestCandidate::new);
-    }
 
     @Nested
-    @DisplayName("Solved Cell Creation")
-    class CreateSolvedCell {
+    @DisplayName("Solved User Cell Creation")
+    class CreateSolvedUserCell {
 
         @Test
         @DisplayName("Should throw on invalid value")
-        void shouldThrowInvalidValue(){
-            assertThrows(IllegalArgumentException.class, () -> cellFactory.createSolvedCell(0));
-            assertThrows(IllegalArgumentException.class, () -> cellFactory.createSolvedCell(11));
+        void shouldThrowOnInvalidValue(){
+            assertThrows(IllegalArgumentException.class, () -> CellFactory.createSolvedUserCell(0));
+            assertThrows(IllegalArgumentException.class, () -> CellFactory.createSolvedUserCell(10));
         }
 
         @Test
-        @DisplayName("Should initialize a solved cell correctly")
+        @DisplayName("Should create user cell with correctly initialized eliminated candidates")
         void shouldCreateCell(){
             int value = 2;
-            TestCell cell = cellFactory.createSolvedCell(value);
-
-            assertTrue(cell.isSolved());
+            UserCell cell = CellFactory.createSolvedUserCell(value);
             assertEquals(value, cell.getValue());
-            assertEquals(9, cell.getCandidateList().size());
-            assertTrue(cell.isFixed());
-            for (int i = 0; i < 9; i++) {
-                TestCandidate testCandidate = cell.getCandidateList().get(i);
-                if (i == value-1) {
-                    assertFalse(testCandidate.isEliminated());
-                } else {
-                    assertTrue(testCandidate.isEliminated());
-                }
-                assertEquals(i + 1, testCandidate.getNumber());
-                assertEquals(cell, testCandidate.getCell());
-            }
-        }
-
-        @Test
-        @DisplayName("Should mark all other candidates as eliminated except the correct one")
-        void shouldEliminateAllExceptCorrect() {
-            int value = 5;
-            TestCell cell = cellFactory.createSolvedCell(value);
-
             assertTrue(cell.isSolved());
-            for (int i = 0; i < 9; i++) {
-                TestCandidate testCandidate = cell.getCandidateList().get(i);
-                if (i == value - 1) {
-                    assertFalse(testCandidate.isEliminated());
-                } else {
-                    assertTrue(testCandidate.isEliminated());
-                }
+            assertNotNull(cell.candidates);
+            assertEquals(10, cell.candidates.length);
+            for (int i = 1; i < 10; i++){
+                UserCandidate candidate = cell.candidates[i];
+                assertNotNull(candidate);
+                assertEquals(i, candidate.getNumber());
+                assertEquals(cell, candidate.getCell());
+                assertTrue(candidate.isEliminated());
             }
+            assertTrue(cell.isFixed());
         }
     }
 
@@ -73,36 +47,43 @@ public class CellFactoryTest {
     class CreateUnsolvedCell {
 
         @Test
-        @DisplayName("Should initialize an unsolved cell correctly")
-        void shouldCreateCell(){
-            SudokuSet firstThreeEliminated = SudokuSet.emptySet();
-            firstThreeEliminated.add(1);
-            firstThreeEliminated.add(2);
-            firstThreeEliminated.add(3);
-            TestCell cell = cellFactory.createUnsolvedCell(firstThreeEliminated);
+        @DisplayName("Should throw on null set")
+        void shouldThrowOnNullSet(){
+            assertThrows(NullPointerException.class, () -> CellFactory.createUnsolvedUserCell(null));
+        }
 
+        @Test
+        @DisplayName("Should initialize an unsolved cell with according eliminated candidates")
+        void shouldCreateCell(){
+            // Creates a cell where 1, 2, 3 are eliminated, other digits there
+            SudokuSet active = SudokuSet.emptySet().add(1).add(2).add(3).negate();
+            UserCell cell = CellFactory.createUnsolvedUserCell(active.negate());
             assertFalse(cell.isSolved());
             assertFalse(cell.isFixed());
-            assertEquals(9, cell.getCandidateList().size());
-            for (int i = 0; i < 9; i++) {
-                TestCandidate testCandidate = cell.getCandidateList().get(i);
-                assertEquals(i + 1, testCandidate.getNumber());
-                assertEquals(cell, testCandidate.getCell());
-                assertEquals(!firstThreeEliminated.contains(i+1), testCandidate.isEliminated());
+            assertNotNull(cell.candidates);
+            assertEquals(10, cell.candidates.length);
+            for (int i = 1; i < 10; i++){
+                UserCandidate candidate = cell.candidates[i];
+                assertNotNull(candidate);
+                assertEquals(i, candidate.getNumber());
+                assertEquals(cell, candidate.getCell());
+                assertEquals(active.contains(i), !candidate.isEliminated());
             }
         }
+
     }
 
     @Nested
     class Idempotency {
         @Test
-        @DisplayName("Should create different candidates on different calls")
+        @DisplayName("Should instantiate different candidate objects across calls")
         void shouldCreateDifferentCandidates(){
-            TestCell cell = cellFactory.createUnsolvedCell(SudokuSet.emptySet());
-            TestCell cell2 = cellFactory.createUnsolvedCell(SudokuSet.emptySet());
+            SudokuSet set = SudokuSet.emptySet();
+            UserCell cell = CellFactory.createUnsolvedUserCell(set);
+            UserCell cell2 = CellFactory.createUnsolvedUserCell(set);
 
             for (int i = 0; i < 9; i++) {
-                assertNotEquals(cell.getCandidateList().get(i), cell2.getCandidateList().get(i));
+                assertNotSame(cell.candidates[i], cell2.candidates[i]);
             }
         }
 
