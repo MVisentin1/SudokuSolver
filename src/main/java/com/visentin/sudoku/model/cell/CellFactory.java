@@ -2,21 +2,24 @@ package com.visentin.sudoku.model.cell;
 
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
+import java.util.Objects;
+
 public class CellFactory {
 
     public static UserCell createSolvedUserCell(int value) {
         BaseCell.checkDigit(value);
         UserCell cell = new UserCell(new SudokuSet(1 << value), getUserCandidates(), value, true);
-        for (UserCandidate candidate : cell.candidates) {
-            candidate.attachCell(cell);
+        for (int i = 1; i <= 9; i++) {
+            cell.candidates[i].attachCell(cell);
         }
         return cell;
     }
 
     public static UserCell createUnsolvedUserCell(SudokuSet eliminatedCandidates) {
+        Objects.requireNonNull(eliminatedCandidates, "eliminatedCandidates cannot be null");
         UserCell cell = new UserCell(eliminatedCandidates, getUserCandidates(), 0, false);
-        for (UserCandidate candidate : cell.candidates) {
-            candidate.attachCell(cell);
+        for (int i = 1; i <= 9; i++) {
+            cell.candidates[i].attachCell(cell);
         }
         return cell;
     }
@@ -30,8 +33,8 @@ public class CellFactory {
             }
         }
         SolverCell cell = new SolverCell(set, candidates);
-        for (SolverCandidate candidate : cell.candidates) {
-            candidate.attachCell(cell);
+        for (int i = 1; i <= 9; i++) {
+            cell.candidates[i].attachCell(cell);
         }
         return cell;
     }

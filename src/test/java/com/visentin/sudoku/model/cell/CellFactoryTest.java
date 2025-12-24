@@ -1,8 +1,6 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.model.grid.house.TestHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -82,7 +80,7 @@ public class CellFactoryTest {
             UserCell cell = CellFactory.createUnsolvedUserCell(set);
             UserCell cell2 = CellFactory.createUnsolvedUserCell(set);
 
-            for (int i = 0; i < 9; i++) {
+            for (int i = 1; i < 10; i++) {
                 assertNotSame(cell.candidates[i], cell2.candidates[i]);
             }
         }

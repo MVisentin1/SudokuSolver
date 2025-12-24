@@ -3,7 +3,6 @@ package com.visentin.sudoku.model.cell;
 import com.visentin.sudoku.model.grid.house.SolverHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
-import java.util.Arrays;
 
 public final class SolverCell extends BaseCell<SolverCell, SolverCandidate, SolverHouse> {
     // -------------------- constructor -----------------------------

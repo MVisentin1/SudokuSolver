@@ -1,6 +1,5 @@
 package com.visentin.sudoku.model.cell;
 
-import com.visentin.sudoku.model.grid.house.TestHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,15 +51,6 @@ class BaseCandidateTest {
         }
 
         @Test
-        @DisplayName("Should throw when attaching a cell twice")
-        void shouldThrowWhenCellAttachedTwice() {
-            TestCandidate candidate = new TestCandidate(1);
-            candidate.attachCell(dummyCell);
-
-            assertThrows(IllegalStateException.class, () -> candidate.attachCell(dummyCell));
-        }
-
-        @Test
         @DisplayName("Should throw when passing null to attachCell")
         void shouldThrowWhenAttachingNull() {
             TestCandidate candidate = new TestCandidate(1);
@@ -76,13 +66,6 @@ class BaseCandidateTest {
 
             assertThrows(IllegalStateException.class, () -> candidate.attachCell(dummyCell));
         }
-
-        @Test
-        @DisplayName("Should throw when attaching null")
-        void shouldThrowOnNullAttachment() {
-            TestCandidate candidate = new TestCandidate(1);
-            assertThrows(NullPointerException.class, () -> candidate.attachCell(null));
-        }
     }
 
     @Nested
@@ -90,12 +73,21 @@ class BaseCandidateTest {
     class EliminationStatus {
         @Test
         @DisplayName("Should return true if candidate is eliminated")
-        void shouldReturnTrueIfEliminated(){
-            TestCell cell = new TestCell(SudokuSet.emptySet().add(1).add(2), new TestCandidate[10]);
-            assertFalse(cell.candidates[1].isEliminated());
-            assertFalse(cell.candidates[2].isEliminated());
-            assertTrue(cell.candidates[3].isEliminated());
+        void shouldBeEliminated() {
+            TestCell cell = TestCell.createUnsolvedTestCell();
+            if (cell.findCandidate(1).isPresent()) {
+                cell.eliminateCandidate(1);
+            }
+            assertTrue(cell.candidates[1].isEliminated());
+        }
 
+        @Test
+        @DisplayName("Should be consistent with cell.findCandidate method")
+        void shouldBeConsistentWithCellFindCandidate(){
+            TestCell cell = TestCell.createUnsolvedTestCell();
+            for (int i = 1; i <= 9; i++) {
+                assertEquals(cell.findCandidate(i).isPresent(), !cell.candidates[i].isEliminated());
+            }
         }
     }
 }

@@ -4,13 +4,11 @@ import com.visentin.sudoku.model.cell.BaseCell;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 public abstract class BaseHouse<
         T extends BaseCell<T, ?, H>,
         H extends BaseHouse<T, H>> {
-    protected SudokuSet solvedNumbers = SudokuSet.emptySet();
+    protected SudokuSet solvedNumbers;
     private final T[] cells;
 
     BaseHouse(SudokuSet solvedNumbers, T[] cells) {

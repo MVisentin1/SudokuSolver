@@ -4,7 +4,6 @@ import com.visentin.sudoku.model.grid.house.UserHouse;
 import com.visentin.sudoku.util.dataStructures.SudokuSet;
 import javafx.beans.property.*;
 
-import java.util.Arrays;
 
 public final class UserCell extends BaseCell<UserCell, UserCandidate, UserHouse> {
     private final IntegerProperty value = new SimpleIntegerProperty();
